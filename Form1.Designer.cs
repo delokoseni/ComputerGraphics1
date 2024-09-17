@@ -254,7 +254,7 @@
             this.Stretch.TabIndex = 20;
             this.Stretch.Text = "Растяжение";
             this.Stretch.UseVisualStyleBackColor = true;
-            this.Stretch.Click += new System.EventHandler(this.Stretch_Click);
+            this.Stretch.Click += (sender, e) => Scaling_Click(sender, e, true);
             // 
             // Clench
             // 
@@ -264,7 +264,7 @@
             this.Clench.TabIndex = 21;
             this.Clench.Text = "Сжатие";
             this.Clench.UseVisualStyleBackColor = true;
-            this.Clench.Click += new System.EventHandler(this.Clench_Click);
+            this.Clench.Click += (sender, e) => Scaling_Click(sender, e, false);
             // 
             // Form1
             // 

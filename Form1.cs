@@ -389,31 +389,25 @@ namespace ComputerGraphics1
             DrawLetterB();
         }
 
-        //растяжение
-        private void Stretch_Click(object sender, EventArgs e)
+        /**
+         * Метод для изменения размеров буквы
+         */
+        private void Scaling_Click(object sender, EventArgs e, bool sign)
         {
-            float[,] Stretch =
-            {
-                { 2, 0, 0, 0},
-                { 0, 2, 0, 0},
-                { 0, 0, 2, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Stretch);
-            DrawLetterB();
-        }
+            float PlusOrMinus;
+            if (sign)
+                PlusOrMinus = 2.0f;
+            else
+                PlusOrMinus = 0.5f;
 
-        //сжатие
-        private void Clench_Click(object sender, EventArgs e)
-        {
-            float[,] Clench =
+            float[,] scaling =
             {
-                { (float)(0.5), 0, 0, 0},
-                { 0, (float)(0.5), 0, 0},
-                { 0, 0, (float)(0.5), 0},
+                { PlusOrMinus*1f, 0, 0, 0},
+                { 0, PlusOrMinus*1f, 0, 0},
+                { 0, 0, PlusOrMinus*1f, 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Clench);
+            LetterB = Mult(LetterB, scaling);
             DrawLetterB();
         }
     }
