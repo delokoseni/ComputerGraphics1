@@ -111,18 +111,18 @@ namespace ComputerGraphics1
                 { 20, 40, 0, 1 },    //J - 9
                 { 50, 40, 0, 1 },    //K - 10
                 { 50, 10, 0, 1 },    //L - 11
-                { 0, 0, 10, 1 },     //A` - 12
-                { 0, 100, 10, 1 },   //B` - 13
-                { 60, 100, 10, 1 },  //C` - 14
-                { 60, 80, 10, 1 },   //D` - 15
-                { 20, 80, 10, 1 },   //E` - 16
-                { 20, 50, 10, 1 },   //F` - 17
-                { 60, 50, 10, 1 },   //G` - 18
-                { 60, 0, 10, 1 },    //H` - 19
-                { 20, 10, 10, 1 },   //I` - 20
-                { 20, 40, 10, 1 },   //J` - 21 
-                { 50, 40, 10, 1 },   //K` - 22
-                { 50, 10, 10, 1 },   //L` - 23
+                { 0, 0, 10, 1 },     //A' - 12
+                { 0, 100, 10, 1 },   //B' - 13
+                { 60, 100, 10, 1 },  //C' - 14
+                { 60, 80, 10, 1 },   //D' - 15
+                { 20, 80, 10, 1 },   //E' - 16
+                { 20, 50, 10, 1 },   //F' - 17
+                { 60, 50, 10, 1 },   //G' - 18
+                { 60, 0, 10, 1 },    //H' - 19
+                { 20, 10, 10, 1 },   //I' - 20
+                { 20, 40, 10, 1 },   //J' - 21 
+                { 50, 40, 10, 1 },   //K' - 22
+                { 50, 10, 10, 1 },   //L' - 23
             };
             LetterB = DefB;
         }
@@ -137,19 +137,21 @@ namespace ComputerGraphics1
             float[,] matrixDraw = Mult(LetterB, proection);
 
             // Рисуем линии для нижней части буквы
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 11; i++)
             {
-                _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
+                if(i != 7)
+                    _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
             }
 
             // Рисуем линии для верхней части буквы
-            for (int i = 12; i < 19; i++)
+            for (int i = 12; i < 23; i++)
             {
-                _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
+                if(i != 19)
+                    _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
             }
 
             // Соединяем нижнюю и верхнюю части
-            for (int i = 0; i < 8; i++) // Соединяем точки между нижней и верхней частями
+            for (int i = 0; i < 12; i++) 
             {
                 _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 12, 0], matrixDraw[i + 12, 1]);
             }
@@ -157,23 +159,8 @@ namespace ComputerGraphics1
             // Дополнительные соединения для завершения буквы
             _graphics.DrawLine(Pens.Red, matrixDraw[0, 0], matrixDraw[0, 1], matrixDraw[7, 0], matrixDraw[7, 1]); // A - H
             _graphics.DrawLine(Pens.Red, matrixDraw[12, 0], matrixDraw[12, 1], matrixDraw[19, 0], matrixDraw[19, 1]); // A' - H'
-
-            
-            _graphics.DrawLine(Pens.Red, matrixDraw[8, 0], matrixDraw[8, 1], matrixDraw[9, 0], matrixDraw[9, 1]);   // I - J
-            _graphics.DrawLine(Pens.Red, matrixDraw[9, 0], matrixDraw[9, 1], matrixDraw[10, 0], matrixDraw[10, 1]); // J - K
-            _graphics.DrawLine(Pens.Red, matrixDraw[10, 0], matrixDraw[10, 1], matrixDraw[11, 0], matrixDraw[11, 1]); // K - L
-            _graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[8, 0], matrixDraw[8, 1]);   // L - I
-             // Соединяем точки I и J с их верхними версиями I' и J'
-            _graphics.DrawLine(Pens.Red, matrixDraw[8, 0], matrixDraw[8, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I - I'
-            _graphics.DrawLine(Pens.Red, matrixDraw[9, 0], matrixDraw[9, 1], matrixDraw[21, 0], matrixDraw[21, 1]); // J - J'
-            _graphics.DrawLine(Pens.Red, matrixDraw[10, 0], matrixDraw[10, 1], matrixDraw[22, 0], matrixDraw[22, 1]); // K - K'
-            _graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[23, 0], matrixDraw[23, 1]); // L - L'
-
-
-            _graphics.DrawLine(Pens.Red, matrixDraw[20, 0], matrixDraw[20, 1], matrixDraw[21, 0], matrixDraw[21, 1]); // I' - J'
-            _graphics.DrawLine(Pens.Red, matrixDraw[21, 0], matrixDraw[21, 1], matrixDraw[22, 0], matrixDraw[22, 1]); // J' - K'
-            _graphics.DrawLine(Pens.Red, matrixDraw[22, 0], matrixDraw[22, 1], matrixDraw[23, 0], matrixDraw[23, 1]); // K' - L'
-            _graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // L' - I'
+            _graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[8, 0], matrixDraw[8, 1]);   // I - L
+            _graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I' - L'
         }
 
         //поместить буквы начального размера в центр системы координат
