@@ -28,7 +28,7 @@ namespace ComputerGraphics1
             cenX = Size.Width / 2;
             cenY = Size.Height / 2;
             SetDefaultPosition();
-            //кабинетное проецирование относительно центра правосторонней системы координат
+            // Кабинетное проецирование относительно центра правосторонней системы координат
             float[,] p =
             {
                 { 1, 0, 0, 0},
@@ -40,7 +40,9 @@ namespace ComputerGraphics1
             DrawLetterB();
         }
 
-        //умножение матриц
+        /**
+         * Метод для умножения матриц 
+         */
         private float[,] Mult(float[,] X, float[,] Y)
         {
             float[,] result = new float[X.GetLength(0), Y.GetLength(1)];
@@ -51,7 +53,9 @@ namespace ComputerGraphics1
             return result;
         }
 
-        //отрисовка осей
+        /**
+         * Метод для отрисовки координатных осей
+         */
         private void DrawAxis()
         {
             _graphics = CreateGraphics();
@@ -70,24 +74,27 @@ namespace ComputerGraphics1
                 { -10, 0, 480, 1}
             };
             Axis = Mult(Axis, proection);
-            #region X
+            // Ось X
             _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[1, 0], Axis[1, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[4, 0], Axis[4, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[5, 0], Axis[5, 1]);
-            #endregion
-            #region Y
+            
+            // Ось Y
             _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[2, 0], Axis[2, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[6, 0], Axis[6, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[7, 0], Axis[7, 1]);
-            #endregion
-            #region Z
+           
+            // Ось Z
             _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[3, 0], Axis[3, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[8, 0], Axis[8, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[9, 0], Axis[9, 1]);
-            #endregion
+            
         }
 
-        //начальные значения Z
+        /**
+         * Метод устанавливающий начальные значения для точек 
+         * из которых строится буква Б
+         */
         private void SetDefaultPosition()
         {
             float[,] DefB =
@@ -120,7 +127,9 @@ namespace ComputerGraphics1
             LetterB = DefB;
         }
 
-        //отрисовка проекции буквы
+        /**
+         * Метод для отрисовки проекции буквы
+         */
         private void DrawLetterB()
         {
             _graphics = CreateGraphics();
