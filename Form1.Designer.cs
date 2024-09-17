@@ -164,7 +164,7 @@
             this.RotateLeftZ.TabIndex = 16;
             this.RotateLeftZ.Text = "Z-l";
             this.RotateLeftZ.UseVisualStyleBackColor = true;
-            this.RotateLeftZ.Click += new System.EventHandler(this.RotateLeftZ_Click);
+            this.RotateLeftZ.Click += (sender, e) => RotateZ_Click(sender, e, "left");
             // 
             // RotateLeftY
             // 
@@ -174,7 +174,7 @@
             this.RotateLeftY.TabIndex = 15;
             this.RotateLeftY.Text = "Y-l";
             this.RotateLeftY.UseVisualStyleBackColor = true;
-            this.RotateLeftY.Click += new System.EventHandler(this.RotateLeftY_Click);
+            this.RotateLeftY.Click += (sender, e) => RotateY_Click(sender, e, "left");
             // 
             // RotateLeftX
             // 
@@ -184,7 +184,7 @@
             this.RotateLeftX.TabIndex = 14;
             this.RotateLeftX.Text = "X-l";
             this.RotateLeftX.UseVisualStyleBackColor = true;
-            this.RotateLeftX.Click += new System.EventHandler(this.RotateLeftX_Click);
+            this.RotateLeftX.Click += (sender, e) => RotateX_Click(sender, e, "left");
             // 
             // RotateRightZ
             // 
@@ -194,7 +194,7 @@
             this.RotateRightZ.TabIndex = 13;
             this.RotateRightZ.Text = "Z-r";
             this.RotateRightZ.UseVisualStyleBackColor = true;
-            this.RotateRightZ.Click += new System.EventHandler(this.RotateRightZ_Click);
+            this.RotateRightZ.Click += (sender, e) => RotateZ_Click(sender, e, "right");
             // 
             // RotateRightY
             // 
@@ -204,7 +204,7 @@
             this.RotateRightY.TabIndex = 12;
             this.RotateRightY.Text = "Y-r";
             this.RotateRightY.UseVisualStyleBackColor = true;
-            this.RotateRightY.Click += new System.EventHandler(this.RotateRightY_Click);
+            this.RotateRightY.Click += (sender, e) => RotateY_Click(sender, e, "right");
             // 
             // RotateRightX
             // 
@@ -214,7 +214,7 @@
             this.RotateRightX.TabIndex = 11;
             this.RotateRightX.Text = "X-r";
             this.RotateRightX.UseVisualStyleBackColor = true;
-            this.RotateRightX.Click += new System.EventHandler(this.RotateRightX_Click);
+            this.RotateRightX.Click += (sender, e) => RotateX_Click(sender, e, "right");
             // 
             // MirrorXY
             // 

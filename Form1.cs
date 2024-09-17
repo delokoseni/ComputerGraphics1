@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace ComputerGraphics1
 {
@@ -245,106 +246,80 @@ namespace ComputerGraphics1
             DrawLetterB();
         }
 
-        //вращение вокруг OX вправо
-        private void RotateRightX_Click(object sender, EventArgs e)
+        /**
+         * Метод вращает букву вдоль оси X в обе стороны
+         */
+        private void RotateX_Click(object sender, EventArgs e, string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
+            float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
+
+            int sign;
+            if (way == "right")
+                sign = 1;
+            else
+                sign = -1;
+
             float[,] Rotate =
             {
                 { 1, 0, 0, 0},
-                { 0, (float)(Math.Cos(angle)), (float)(Math.Sin(angle)), 0},
-                { 0, -(float)(Math.Sin(angle)), (float)(Math.Cos(angle)), 0},
+                { 0, (float)(Math.Cos(angle)), sign * (float)(Math.Sin(angle)), 0},
+                { 0, -sign * (float)(Math.Sin(angle)), (float)(Math.Cos(angle)), 0},
                 { 0, 0, 0, 1}
             };
             LetterB = Mult(LetterB, Rotate);
             DrawLetterB();
         }
 
-        //вращение вокруг OX влево
-        private void RotateLeftX_Click(object sender, EventArgs e)
+        /**
+         * Метод вращает букву вдоль оси Y в обе стороны
+         */
+        private void RotateY_Click(object sender, EventArgs e, string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
-            float[,] Rotate =
-            {
-                { 1, 0, 0, 0},
-                { 0, (float)Math.Cos(angle), -((float)(Math.Sin(angle))), 0},
-                { 0, ((float)(Math.Sin(angle))), ((float)(Math.Cos(angle))), 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Rotate);
-            DrawLetterB();
-        }
+            float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
 
-        //вращение вокруг OY вправо
-        private void RotateRightY_Click(object sender, EventArgs e)
-        {
-            int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
+            int sign;
+            if (way == "right")
+                sign = 1;
+            else
+                sign = -1;
+
             float[,] Rotate =
             {
-                { ((float)(Math.Cos(angle))), 0, ((float)(Math.Sin(angle))), 0},
+                { ((float)(Math.Cos(angle))), 0, sign * ((float)(Math.Sin(angle))), 0},
                 { 0, 1, 0, 0},
-                { -((float)(Math.Sin(angle))), 0, ((float)(Math.Cos(angle))), 0},
+                { -sign * ((float)(Math.Sin(angle))), 0, ((float)(Math.Cos(angle))), 0},
                 { 0, 0, 0, 1}
             };
             LetterB = Mult(LetterB, Rotate);
             DrawLetterB();
         }
 
-        //вращение вокруг OY влево
-        private void RotateLeftY_Click(object sender, EventArgs e)
+        /**
+         * Метод вращает букву вдоль оси Z в обе стороны
+         */
+        private void RotateZ_Click(object sender, EventArgs e, string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
-            float[,] Rotate =
-            {
-                { ((float)(Math.Cos(angle))), 0, -((float)(Math.Sin(angle))), 0},
-                { 0, 1, 0, 0},
-                { ((float)(Math.Sin(angle))), 0, ((float)(Math.Cos(angle))), 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Rotate);
-            DrawLetterB();
-        }
+            float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
 
-        //вращение вокруг OZ вправо
-        private void RotateRightZ_Click(object sender, EventArgs e)
-        {
-            int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
+            int sign;
+            if (way == "right")
+                sign = 1;
+            else
+                sign = -1;
+
             float[,] Rotate =
             {
-                { ((float)(Math.Cos(angle))), -((float)(Math.Sin(angle))), 0, 0},
-                { ((float)(Math.Sin(angle))), ((float)(Math.Cos(angle))), 0, 0},
+                { ((float)(Math.Cos(angle))), -sign * ((float)(Math.Sin(angle))), 0, 0},
+                { sign * ((float)(Math.Sin(angle))), ((float)(Math.Cos(angle))), 0, 0},
                 { 0, 0, 1, 0},
                 { 0, 0, 0, 1}
             };
             LetterB = Mult(LetterB, Rotate);
             DrawLetterB();
-        }
 
-        //вращение вокруг OZ влево
-        private void RotateLeftZ_Click(object sender, EventArgs e)
-        {
-            int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            //перевод в радианы
-            float angle = (float)(toRotate * Math.PI / 180);
-            float[,] Rotate =
-            {
-                { ((float)(Math.Cos(angle))), ((float)(Math.Sin(angle))), 0, 0},
-                { -((float)(Math.Sin(angle))), ((float)(Math.Cos(angle))), 0, 0},
-                { 0, 0, 1, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Rotate);
-            DrawLetterB();
         }
 
         //отражение относительно плоскости XY
