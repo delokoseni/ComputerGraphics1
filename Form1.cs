@@ -163,98 +163,83 @@ namespace ComputerGraphics1
             _graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I' - L'
         }
 
-        //поместить буквы начального размера в центр системы координат
+        /**
+         * Метод обрабатывает событие нажатия на кнопку buttonDeffaultPosition
+         * В результате буква перерисовывается в изначальном положении и первоначальном виде
+         */
         private void buttonDeffaultPosition_Click(object sender, EventArgs e)
         {
             SetDefaultPosition();
             DrawLetterB();
         }
 
-        //движение вдоль OX в положительном направлении
-        private void MovePlusX_Click(object sender, EventArgs e)
+        /**
+         * Метод передвигающий букву вдоль оси X
+         */
+        private void MoveX_Click(object sender, EventArgs e, bool sign)
         {
             int toMove = Convert.ToInt32(MoveTextBox.Text);
+
+            int PlusOrMinus;
+            if (sign)
+                PlusOrMinus = 1;
+            else
+                PlusOrMinus = -1;
+
             float[,] Move =
             {
                 { 1, 0, 0, 0},
                 { 0, 1, 0, 0},
                 { 0, 0, 1, 0},
-                { toMove, 0, 0, 1}
+                { PlusOrMinus * toMove, 0, 0, 1}
             };
             LetterB = Mult(LetterB, Move);
             DrawLetterB();
         }
 
-        //движение вдоль OX в отрицательном направлении
-        private void MoveMinusX_Click(object sender, EventArgs e)
+        /**
+         * Метод передвигающий букву вдоль оси Y
+         */
+        private void MoveY_Click(object sender, EventArgs e, bool sign)
         {
             int toMove = Convert.ToInt32(MoveTextBox.Text);
+
+            int PlusOrMinus;
+            if (sign)
+                PlusOrMinus = 1;
+            else
+                PlusOrMinus = -1;
+
             float[,] Move =
             {
                 { 1, 0, 0, 0},
                 { 0, 1, 0, 0},
                 { 0, 0, 1, 0},
-                { -toMove, 0, 0, 1}
+                { 0, PlusOrMinus * toMove, 0, 1}
             };
             LetterB = Mult(LetterB, Move);
             DrawLetterB();
         }
 
-        //движение вдоль OY в положительном направлении
-        private void MovePlusY_Click(object sender, EventArgs e)
+        /**
+         * Метод передвигающий букву вдоль оси Z
+         */
+        private void MoveZ_Click(object sender, EventArgs e, bool sign)
         {
             int toMove = Convert.ToInt32(MoveTextBox.Text);
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, toMove, 0, 1}
-            };
-            LetterB = Mult(LetterB, Move);
-            DrawLetterB();
-        }
 
-        //движение вдоль OY в отрицательном направлении
-        private void MoveMinusY_Click(object sender, EventArgs e)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, -toMove, 0, 1}
-            };
-            LetterB = Mult(LetterB, Move);
-            DrawLetterB();
-        }
+            int PlusOrMinus;
+            if (sign)
+                PlusOrMinus = 1;
+            else
+                PlusOrMinus = -1;
 
-        //движение вдоль OZ в положительном направлении
-        private void MovePlusZ_Click(object sender, EventArgs e)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
             float[,] Move =
             {
                 { 1, 0, 0, 0},
                 { 0, 1, 0, 0},
                 { 0, 0, 1, 0},
-                { 0, 0, toMove, 1}
-            };
-            LetterB = Mult(LetterB, Move);
-            DrawLetterB();
-        }
-
-        //движение вдоль OZ в отрицательном направлении
-        private void MoveMinusZ_Click(object sender, EventArgs e)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, 0, -toMove, 1}
+                { 0, 0, PlusOrMinus * toMove, 1}
             };
             LetterB = Mult(LetterB, Move);
             DrawLetterB();

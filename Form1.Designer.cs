@@ -87,7 +87,7 @@
             this.MovePlusX.TabIndex = 3;
             this.MovePlusX.Text = "X+";
             this.MovePlusX.UseVisualStyleBackColor = true;
-            this.MovePlusX.Click += new System.EventHandler(this.MovePlusX_Click);
+            this.MovePlusX.Click += (sender, e) => MoveX_Click(sender, e, true);
             // 
             // MovePlusY
             // 
@@ -97,7 +97,7 @@
             this.MovePlusY.TabIndex = 4;
             this.MovePlusY.Text = "Y+";
             this.MovePlusY.UseVisualStyleBackColor = true;
-            this.MovePlusY.Click += new System.EventHandler(this.MovePlusY_Click);
+            this.MovePlusY.Click += (sender, e) => MoveY_Click(sender, e, true);
             // 
             // MovePlusZ
             // 
@@ -107,7 +107,7 @@
             this.MovePlusZ.TabIndex = 5;
             this.MovePlusZ.Text = "Z+";
             this.MovePlusZ.UseVisualStyleBackColor = true;
-            this.MovePlusZ.Click += new System.EventHandler(this.MovePlusZ_Click);
+            this.MovePlusZ.Click += (sender, e) => MoveZ_Click(sender, e, true);
             // 
             // MoveMinusZ
             // 
@@ -117,7 +117,7 @@
             this.MoveMinusZ.TabIndex = 8;
             this.MoveMinusZ.Text = "Z-";
             this.MoveMinusZ.UseVisualStyleBackColor = true;
-            this.MoveMinusZ.Click += new System.EventHandler(this.MoveMinusZ_Click);
+            this.MoveMinusZ.Click += (sender, e) => MoveZ_Click(sender, e, false);
             // 
             // MoveMinusY
             // 
@@ -127,7 +127,7 @@
             this.MoveMinusY.TabIndex = 7;
             this.MoveMinusY.Text = "Y-";
             this.MoveMinusY.UseVisualStyleBackColor = true;
-            this.MoveMinusY.Click += new System.EventHandler(this.MoveMinusY_Click);
+            this.MoveMinusY.Click += (sender, e) => MoveY_Click(sender, e, false);
             // 
             // MoveMinusX
             // 
@@ -137,7 +137,7 @@
             this.MoveMinusX.TabIndex = 6;
             this.MoveMinusX.Text = "X-";
             this.MoveMinusX.UseVisualStyleBackColor = true;
-            this.MoveMinusX.Click += new System.EventHandler(this.MoveMinusX_Click);
+            this.MoveMinusX.Click += (sender, e) => MoveX_Click(sender, e, false);
             // 
             // RotateTextBox
             // 
