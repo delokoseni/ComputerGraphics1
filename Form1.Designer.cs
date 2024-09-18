@@ -412,8 +412,7 @@
             this.ButtonDeleteLine.TabIndex = 0;
             this.ButtonDeleteLine.Text = "Удалить линию";
             this.ButtonDeleteLine.UseVisualStyleBackColor = true;
-            //this.ButtonDeleteLine.Click += new System.EventHandler(this.buttonDeffaultPosition_Click);
-            // 
+            this.ButtonDeleteLine.Click += new System.EventHandler(this.ButtonDeleteLine_Click);
             // 
             // Form1
             // 
@@ -508,4 +507,3 @@
     }
 
 }
-

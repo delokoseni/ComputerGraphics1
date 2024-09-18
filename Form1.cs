@@ -19,6 +19,9 @@ namespace ComputerGraphics1
         }
         private float[,] LetterB;
         private float[,] proection;
+        private float previousX = 0, previousX1 = 0;
+        private float previousY = 0, previousY1 = 0;
+        private float previousZ = 0, previousZ1 = 0;
         private int cenX;
         private int cenY;
         private Graphics _graphics;
@@ -384,7 +387,14 @@ namespace ComputerGraphics1
                 // Проверяем, что точки не совпадают
                 if (x1 != x2 || y1 != y2 || z1 != z2)
                 {
-                    DrawLineBetweenPoints(x1, y1, z1, x2, y2, z2);
+                    DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
+                    DrawLineBetweenPoints(x1, y1, z1, x2, y2, z2, Pens.Blue);
+                    previousX = x1;
+                    previousX1 = x2;
+                    previousY = y1;
+                    previousY1 = y2;
+                    previousZ = z1;
+                    previousZ1 = z2;
                 }
                 else
                 {
@@ -400,12 +410,11 @@ namespace ComputerGraphics1
         /**
          * Метод отображающий прямую между двумя точками по заданным координатам
          */
-        private void DrawLineBetweenPoints(float x1, float y1, float z1, float x2, float y2, float z2)
+        private void DrawLineBetweenPoints(float x1, float y1, float z1, float x2, float y2, float z2, Pen color)
         {
             // Создаем графику для отрисовки
             //_graphics = CreateGraphics();
 
-            // Применяем проекцию к точкам
             float[,] point1 = { { x1, y1, z1, 1 } };
             float[,] point2 = { { x2, y2, z2, 1 } };
 
@@ -413,9 +422,16 @@ namespace ComputerGraphics1
             point2 = MultiplyMatrices(point2, proection);
 
             // Рисуем линию между преобразованными точками
-            _graphics.DrawLine(Pens.DarkGray, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
+            _graphics.DrawLine(color, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
 
         }
 
+        /**
+         * Метод для обработки нажатия на кнопку ButtonPrintLine
+         */
+        private void ButtonDeleteLine_Click(object sender, EventArgs e)
+        {
+            DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
+        }
     }
 }
