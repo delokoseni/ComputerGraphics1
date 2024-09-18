@@ -483,19 +483,22 @@ namespace ComputerGraphics1
 
                 float[,] rotationMatrix =
                 {
-            { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),
-              (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),
-              (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0 },
+                    { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),
+                      (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),
+                      (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0 
+                    },
 
-            { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),
-              (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),
-              (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0 },
+                    { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),
+                      (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),
+                      (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0 
+                    },
 
-            { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),
-              (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),
-              (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0 },
+                    { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),
+                      (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),
+                      (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0 
+                    },
 
-            { 0, 0, 0, 1 }
+                    { 0, 0, 0, 1 }
         };
 
                 // Применяем матрицу вращения к букве "Б"

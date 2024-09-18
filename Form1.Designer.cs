@@ -89,6 +89,7 @@ namespace ComputerGraphics1
             this.label1.Size = new System.Drawing.Size(99, 16);
             this.label1.TabIndex = 1;
             this.label1.Text = "Перемещение";
+            this.label1.BackColor = System.Drawing.Color.White;
             // 
             // MoveTextBox
             // 
@@ -174,6 +175,7 @@ namespace ComputerGraphics1
             this.label2.Size = new System.Drawing.Size(73, 16);
             this.label2.TabIndex = 9;
             this.label2.Text = "Вращение";
+            this.label2.BackColor = System.Drawing.Color.White;
             // 
             // RotateLeftZ
             // 
@@ -288,11 +290,12 @@ namespace ComputerGraphics1
             // labelLineForRotation
             // 
             this.labelLineForRotation.AutoSize = true;
-            this.labelLineForRotation.Location = new System.Drawing.Point(13, 432);
+            this.labelLineForRotation.Location = new System.Drawing.Point(13, 429);
             this.labelLineForRotation.Name = "labelLineForRotation";
             this.labelLineForRotation.Size = new System.Drawing.Size(99, 16);
             this.labelLineForRotation.TabIndex = 1;
             this.labelLineForRotation.Text = "Прямая для вращения";
+            this.labelLineForRotation.BackColor = System.Drawing.Color.White;
             // 
             // labelX
             // 
@@ -302,6 +305,7 @@ namespace ComputerGraphics1
             this.labelX.Size = new System.Drawing.Size(99, 16);
             this.labelX.TabIndex = 1;
             this.labelX.Text = "X = ";
+            this.labelX.BackColor = System.Drawing.Color.White;
             // 
             // labelY
             // 
@@ -311,6 +315,7 @@ namespace ComputerGraphics1
             this.labelY.Size = new System.Drawing.Size(99, 16);
             this.labelY.TabIndex = 1;
             this.labelY.Text = "Y = ";
+            this.labelY.BackColor = System.Drawing.Color.White;
             // 
             // labelZ
             // 
@@ -320,6 +325,7 @@ namespace ComputerGraphics1
             this.labelZ.Size = new System.Drawing.Size(99, 16);
             this.labelZ.TabIndex = 1;
             this.labelZ.Text = "Z = ";
+            this.labelZ.BackColor = System.Drawing.Color.White;
             // 
             // CoordinateX
             // 
@@ -353,6 +359,7 @@ namespace ComputerGraphics1
             this.labelX1.Size = new System.Drawing.Size(99, 16);
             this.labelX1.TabIndex = 1;
             this.labelX1.Text = "X1 = ";
+            this.labelX1.BackColor = System.Drawing.Color.White;
             // 
             // labelY1
             // 
@@ -362,6 +369,7 @@ namespace ComputerGraphics1
             this.labelY1.Size = new System.Drawing.Size(99, 16);
             this.labelY1.TabIndex = 1;
             this.labelY1.Text = "Y1 = ";
+            this.labelY1.BackColor = System.Drawing.Color.White;
             // 
             // labelZ1
             // 
@@ -371,6 +379,7 @@ namespace ComputerGraphics1
             this.labelZ1.Size = new System.Drawing.Size(99, 16);
             this.labelZ1.TabIndex = 1;
             this.labelZ1.Text = "Z1 = ";
+            this.labelZ1.BackColor = System.Drawing.Color.White;
             // 
             // CoordinateX1
             // 
