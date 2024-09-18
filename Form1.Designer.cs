@@ -29,7 +29,24 @@
         private void InitializeComponent()
         {
             this.buttonDeffaultPosition = new System.Windows.Forms.Button();
+            this.ButtonPrintLine = new System.Windows.Forms.Button();
+            this.ButtonDeleteLine = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelLineForRotation = new System.Windows.Forms.Label();
+            this.labelX = new System.Windows.Forms.Label();
+            this.labelY = new System.Windows.Forms.Label();
+            this.labelZ = new System.Windows.Forms.Label();
+            this.CoordinateX = new System.Windows.Forms.TextBox();
+            this.CoordinateY = new System.Windows.Forms.TextBox();
+            this.CoordinateZ = new System.Windows.Forms.TextBox();
+            this.labelX1 = new System.Windows.Forms.Label();
+            this.labelY1 = new System.Windows.Forms.Label();
+            this.labelZ1 = new System.Windows.Forms.Label();
+            this.CoordinateX1 = new System.Windows.Forms.TextBox();
+            this.CoordinateY1 = new System.Windows.Forms.TextBox();
+            this.CoordinateZ1 = new System.Windows.Forms.TextBox();
+            this.ButtonPrintLine = new System.Windows.Forms.Button();
+            this.ButtonDeleteLine = new System.Windows.Forms.Button();
             this.MoveTextBox = new System.Windows.Forms.TextBox();
             this.MovePlusX = new System.Windows.Forms.Button();
             this.MovePlusY = new System.Windows.Forms.Button();
@@ -224,7 +241,7 @@
             this.MirrorXY.TabIndex = 17;
             this.MirrorXY.Text = "Отражение OXY";
             this.MirrorXY.UseVisualStyleBackColor = true;
-            this.MirrorXY.Click += new System.EventHandler(this.MirrorXY_Click);
+            this.MirrorXY.Click += (sender, e) => Reflection(sender, e, "XY");
             // 
             // MirrorXZ
             // 
@@ -234,7 +251,7 @@
             this.MirrorXZ.TabIndex = 18;
             this.MirrorXZ.Text = "Отражение OXZ";
             this.MirrorXZ.UseVisualStyleBackColor = true;
-            this.MirrorXZ.Click += new System.EventHandler(this.MirrorXZ_Click);
+            this.MirrorXZ.Click += (sender, e) => Reflection(sender, e, "XZ");
             // 
             // MirrorYZ
             // 
@@ -244,7 +261,7 @@
             this.MirrorYZ.TabIndex = 19;
             this.MirrorYZ.Text = "Отражение OYZ";
             this.MirrorYZ.UseVisualStyleBackColor = true;
-            this.MirrorYZ.Click += new System.EventHandler(this.MirrorYZ_Click);
+            this.MirrorYZ.Click += (sender, e) => Reflection(sender, e, "YZ");
             // 
             // Stretch
             // 
@@ -265,6 +282,138 @@
             this.Clench.Text = "Сжатие";
             this.Clench.UseVisualStyleBackColor = true;
             this.Clench.Click += (sender, e) => Scaling_Click(sender, e, false);
+            // 
+            // labelLineForRotation
+            // 
+            this.labelLineForRotation.AutoSize = true;
+            this.labelLineForRotation.Location = new System.Drawing.Point(13, 432);
+            this.labelLineForRotation.Name = "labelLineForRotation";
+            this.labelLineForRotation.Size = new System.Drawing.Size(99, 16);
+            this.labelLineForRotation.TabIndex = 1;
+            this.labelLineForRotation.Text = "Прямая для вращения";
+            // 
+            // labelX
+            // 
+            this.labelX.AutoSize = true;
+            this.labelX.Location = new System.Drawing.Point(13, 452);
+            this.labelX.Name = "labelX";
+            this.labelX.Size = new System.Drawing.Size(99, 16);
+            this.labelX.TabIndex = 1;
+            this.labelX.Text = "X = ";
+            // 
+            // labelY
+            // 
+            this.labelY.AutoSize = true;
+            this.labelY.Location = new System.Drawing.Point(113, 452);
+            this.labelY.Name = "labelY";
+            this.labelY.Size = new System.Drawing.Size(99, 16);
+            this.labelY.TabIndex = 1;
+            this.labelY.Text = "Y = ";
+            // 
+            // labelZ
+            // 
+            this.labelZ.AutoSize = true;
+            this.labelZ.Location = new System.Drawing.Point(213, 452);
+            this.labelZ.Name = "labelZ";
+            this.labelZ.Size = new System.Drawing.Size(99, 16);
+            this.labelZ.TabIndex = 1;
+            this.labelZ.Text = "Z = ";
+            // 
+            // CoordinateX
+            // 
+            this.CoordinateX.Location = new System.Drawing.Point(50, 448);
+            this.CoordinateX.Name = "CoordinateX";
+            this.CoordinateX.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateX.TabIndex = 2;
+            this.CoordinateX.Text = "";
+            // 
+            // CoordinateY
+            // 
+            this.CoordinateY.Location = new System.Drawing.Point(150, 448);
+            this.CoordinateY.Name = "CoordinateY";
+            this.CoordinateY.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateY.TabIndex = 2;
+            this.CoordinateY.Text = "";
+            // 
+            // CoordinateZ
+            // 
+            this.CoordinateZ.Location = new System.Drawing.Point(250, 448);
+            this.CoordinateZ.Name = "CoordinateZ";
+            this.CoordinateZ.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateZ.TabIndex = 2;
+            this.CoordinateZ.Text = "";
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            this.labelX1.Location = new System.Drawing.Point(13, 482);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(99, 16);
+            this.labelX1.TabIndex = 1;
+            this.labelX1.Text = "X1 = ";
+            // 
+            // labelY1
+            // 
+            this.labelY1.AutoSize = true;
+            this.labelY1.Location = new System.Drawing.Point(113, 482);
+            this.labelY1.Name = "labelY1";
+            this.labelY1.Size = new System.Drawing.Size(99, 16);
+            this.labelY1.TabIndex = 1;
+            this.labelY1.Text = "Y1 = ";
+            // 
+            // labelZ1
+            // 
+            this.labelZ1.AutoSize = true;
+            this.labelZ1.Location = new System.Drawing.Point(213, 482);
+            this.labelZ1.Name = "labelZ1";
+            this.labelZ1.Size = new System.Drawing.Size(99, 16);
+            this.labelZ1.TabIndex = 1;
+            this.labelZ1.Text = "Z1 = ";
+            // 
+            // CoordinateX1
+            // 
+            this.CoordinateX1.Location = new System.Drawing.Point(50, 478);
+            this.CoordinateX1.Name = "CoordinateX1";
+            this.CoordinateX1.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateX1.TabIndex = 2;
+            this.CoordinateX1.Text = "";
+            // 
+            // CoordinateY1
+            // 
+            this.CoordinateY1.Location = new System.Drawing.Point(150, 478);
+            this.CoordinateY1.Name = "CoordinateY1";
+            this.CoordinateY1.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateY1.TabIndex = 2;
+            this.CoordinateY1.Text = "";
+            // 
+            // CoordinateZ1
+            // 
+            this.CoordinateZ1.Location = new System.Drawing.Point(250, 478);
+            this.CoordinateZ1.Name = "CoordinateZ1";
+            this.CoordinateZ1.Size = new System.Drawing.Size(50, 22);
+            this.CoordinateZ1.TabIndex = 2;
+            this.CoordinateZ1.Text = "";
+            // 
+            // ButtonPrintLine
+            // 
+            this.ButtonPrintLine.Location = new System.Drawing.Point(13, 508);
+            this.ButtonPrintLine.Name = "ButtonPrintLine";
+            this.ButtonPrintLine.Size = new System.Drawing.Size(183, 30);
+            this.ButtonPrintLine.TabIndex = 0;
+            this.ButtonPrintLine.Text = "Отобразить линию";
+            this.ButtonPrintLine.UseVisualStyleBackColor = true;
+            this.ButtonPrintLine.Click += new System.EventHandler(this.ButtonPrintLine_Click);
+            // 
+            // ButtonDeleteLine
+            // 
+            this.ButtonDeleteLine.Location = new System.Drawing.Point(13, 538);
+            this.ButtonDeleteLine.Name = "ButtonDeleteLine";
+            this.ButtonDeleteLine.Size = new System.Drawing.Size(183, 30);
+            this.ButtonDeleteLine.TabIndex = 0;
+            this.ButtonDeleteLine.Text = "Удалить линию";
+            this.ButtonDeleteLine.UseVisualStyleBackColor = true;
+            //this.ButtonDeleteLine.Click += new System.EventHandler(this.buttonDeffaultPosition_Click);
+            // 
             // 
             // Form1
             // 
@@ -291,8 +440,23 @@
             this.Controls.Add(this.MovePlusY);
             this.Controls.Add(this.MovePlusX);
             this.Controls.Add(this.MoveTextBox);
+            this.Controls.Add(this.CoordinateX);
+            this.Controls.Add(this.CoordinateY);
+            this.Controls.Add(this.CoordinateZ);
+            this.Controls.Add(this.CoordinateX1);
+            this.Controls.Add(this.CoordinateY1);
+            this.Controls.Add(this.CoordinateZ1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelLineForRotation);
+            this.Controls.Add(this.labelX);
+            this.Controls.Add(this.labelY);
+            this.Controls.Add(this.labelZ);
+            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.labelY1);
+            this.Controls.Add(this.labelZ1);
             this.Controls.Add(this.buttonDeffaultPosition);
+            this.Controls.Add(this.ButtonPrintLine);
+            this.Controls.Add(this.ButtonDeleteLine);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Афинные преобразования";
@@ -305,7 +469,22 @@
         #endregion
 
         private System.Windows.Forms.Button buttonDeffaultPosition;
+        private System.Windows.Forms.Button ButtonPrintLine;
+        private System.Windows.Forms.Button ButtonDeleteLine;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelLineForRotation;
+        private System.Windows.Forms.Label labelX;
+        private System.Windows.Forms.Label labelY;
+        private System.Windows.Forms.Label labelZ;
+        private System.Windows.Forms.TextBox CoordinateX;
+        private System.Windows.Forms.TextBox CoordinateZ;
+        private System.Windows.Forms.TextBox CoordinateY;
+        private System.Windows.Forms.Label labelX1;
+        private System.Windows.Forms.Label labelY1;
+        private System.Windows.Forms.Label labelZ1;
+        private System.Windows.Forms.TextBox CoordinateX1;
+        private System.Windows.Forms.TextBox CoordinateZ1;
+        private System.Windows.Forms.TextBox CoordinateY1;
         private System.Windows.Forms.TextBox MoveTextBox;
         private System.Windows.Forms.Button MovePlusX;
         private System.Windows.Forms.Button MovePlusY;

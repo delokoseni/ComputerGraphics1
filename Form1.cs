@@ -44,7 +44,7 @@ namespace ComputerGraphics1
         /**
          * Метод для умножения матриц 
          */
-        private float[,] Mult(float[,] X, float[,] Y)
+        private float[,] MultiplyMatrices(float[,] X, float[,] Y)
         {
             float[,] result = new float[X.GetLength(0), Y.GetLength(1)];
             for (int i = 0; i < X.GetLength(0); i++)
@@ -74,7 +74,7 @@ namespace ComputerGraphics1
                 { 12, 0, 495, 1},
                 { -10, 0, 480, 1}
             };
-            Axis = Mult(Axis, proection);
+            Axis = MultiplyMatrices(Axis, proection);
             // Ось X
             _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[1, 0], Axis[1, 1]);
             _graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[4, 0], Axis[4, 1]);
@@ -135,7 +135,7 @@ namespace ComputerGraphics1
         {
             _graphics = CreateGraphics();
             DrawAxis();
-            float[,] matrixDraw = Mult(LetterB, proection);
+            float[,] matrixDraw = MultiplyMatrices(LetterB, proection);
 
             // Рисуем линии для нижней части буквы
             for (int i = 0; i < 11; i++)
@@ -194,7 +194,7 @@ namespace ComputerGraphics1
                 { 0, 0, 1, 0},
                 { PlusOrMinus * toMove, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Move);
+            LetterB = MultiplyMatrices(LetterB, Move);
             DrawLetterB();
         }
 
@@ -218,7 +218,7 @@ namespace ComputerGraphics1
                 { 0, 0, 1, 0},
                 { 0, PlusOrMinus * toMove, 0, 1}
             };
-            LetterB = Mult(LetterB, Move);
+            LetterB = MultiplyMatrices(LetterB, Move);
             DrawLetterB();
         }
 
@@ -242,7 +242,7 @@ namespace ComputerGraphics1
                 { 0, 0, 1, 0},
                 { 0, 0, PlusOrMinus * toMove, 1}
             };
-            LetterB = Mult(LetterB, Move);
+            LetterB = MultiplyMatrices(LetterB, Move);
             DrawLetterB();
         }
 
@@ -267,7 +267,7 @@ namespace ComputerGraphics1
                 { 0, -sign * (float)(Math.Sin(angle)), (float)(Math.Cos(angle)), 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Rotate);
+            LetterB = MultiplyMatrices(LetterB, Rotate);
             DrawLetterB();
         }
 
@@ -292,7 +292,7 @@ namespace ComputerGraphics1
                 { -sign * ((float)(Math.Sin(angle))), 0, ((float)(Math.Cos(angle))), 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Rotate);
+            LetterB = MultiplyMatrices(LetterB, Rotate);
             DrawLetterB();
         }
 
@@ -317,50 +317,32 @@ namespace ComputerGraphics1
                 { 0, 0, 1, 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Rotate);
+            LetterB = MultiplyMatrices(LetterB, Rotate);
             DrawLetterB();
 
         }
 
-        //отражение относительно плоскости XY
-        private void MirrorXY_Click(object sender, EventArgs e)
+        /**
+         * Метод отражающий букву относительно плоскостей XY, XZ, YZ
+         */
+        private void Reflection(object sender, EventArgs e, string plane)
         {
-            float[,] Mirror =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, -1, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Mirror);
-            DrawLetterB();
-        }
+            int X = 1, Y = 1, Z = 1;
+            if (plane == "YZ")
+                X = -1;
+            else if (plane == "XZ")
+                Y = -1;
+            else
+                Z = -1;
 
-        //отражение относительно плоскости XZ
-        private void MirrorXZ_Click(object sender, EventArgs e)
-        {
             float[,] Mirror =
             {
-                { 1, 0, 0, 0},
-                { 0, -1, 0, 0},
-                { 0, 0, 1, 0},
+                { X * 1, 0, 0, 0},
+                { 0, Y * 1, 0, 0},
+                { 0, 0, Z * 1, 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, Mirror);
-            DrawLetterB();
-        }
-
-        //отражение относительно плоскости YZ
-        private void MirrorYZ_Click(object sender, EventArgs e)
-        {
-            float[,] Mirror =
-            {
-                { -1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = Mult(LetterB, Mirror);
+            LetterB = MultiplyMatrices(LetterB, Mirror);
             DrawLetterB();
         }
 
@@ -382,8 +364,55 @@ namespace ComputerGraphics1
                 { 0, 0, PlusOrMinus*1f, 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = Mult(LetterB, scaling);
+            LetterB = MultiplyMatrices(LetterB, scaling);
             DrawLetterB();
         }
+
+        /**
+         * Метод для обработки нажатия на кнопку ButtonPrintLine
+         */
+        private void ButtonPrintLine_Click(object sender, EventArgs e)
+        {
+            // Получаем координаты из текстовых полей
+            if (float.TryParse(CoordinateX.Text, out float x1) &&
+                float.TryParse(CoordinateY.Text, out float y1) &&
+                float.TryParse(CoordinateZ.Text, out float z1) &&
+                float.TryParse(CoordinateX1.Text, out float x2) &&
+                float.TryParse(CoordinateY1.Text, out float y2) &&
+                float.TryParse(CoordinateZ1.Text, out float z2))
+            {
+                // Проверяем, что точки не совпадают
+                if (x1 != x2 || y1 != y2 || z1 != z2)
+                {
+                    DrawLineBetweenPoints(x1, y1, z1, x2, y2, z2);
+                }
+                else
+                {
+                    MessageBox.Show("Координаты двух точек не должны совпадать.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, введите корректные координаты.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /**
+         * Метод отображающий прямую между двумя точками по заданным координатам
+         */
+        private void DrawLineBetweenPoints(float x1, float y1, float z1, float x2, float y2, float z2)
+        {
+            // Создаем графику для отрисовки
+            //_graphics = CreateGraphics();
+
+            // Применяем проекцию к точкам
+            float[,] point1 = { { x1 }, { y1 }, { z1 }, { 1 } };
+            float[,] point2 = { { x2 }, { y2 }, { z2 }, { 1 } };
+
+            // Рисуем линию между преобразованными точками
+            _graphics.DrawLine(Pens.Red, point1[0, 0], point1[1, 0], point2[0, 0], point2[1, 0]);
+
+        }
+
     }
 }
