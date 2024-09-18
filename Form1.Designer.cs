@@ -33,7 +33,8 @@ namespace ComputerGraphics1
             this.buttonDeffaultPosition = new System.Windows.Forms.Button();
             this.ButtonPrintLine = new System.Windows.Forms.Button();
             this.ButtonDeleteLine = new System.Windows.Forms.Button();
-            this.ButtonRotate = new System.Windows.Forms.Button();
+            this.ButtonRotateForward = new System.Windows.Forms.Button();
+            this.ButtonRotateBack = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.labelLineForRotation = new System.Windows.Forms.Label();
             this.labelX = new System.Windows.Forms.Label();
@@ -415,15 +416,25 @@ namespace ComputerGraphics1
             this.ButtonDeleteLine.UseVisualStyleBackColor = true;
             this.ButtonDeleteLine.Click += new System.EventHandler(this.ButtonDeleteLine_Click);
             // 
-            // ButtonRotate
+            // ButtonRotateForward
             // 
-            this.ButtonRotate.Location = new System.Drawing.Point(13, 578);
-            this.ButtonRotate.Name = "ButtonRotate";
-            this.ButtonRotate.Size = new System.Drawing.Size(183, 30);
-            this.ButtonRotate.TabIndex = 0;
-            this.ButtonRotate.Text = "Вращать";
-            this.ButtonRotate.UseVisualStyleBackColor = true;
-            this.ButtonRotate.Click += new System.EventHandler(this.Rotate_Click);
+            this.ButtonRotateForward.Location = new System.Drawing.Point(13, 578);
+            this.ButtonRotateForward.Name = "ButtonRotateForward";
+            this.ButtonRotateForward.Size = new System.Drawing.Size(183, 30);
+            this.ButtonRotateForward.TabIndex = 0;
+            this.ButtonRotateForward.Text = "Вращать вперед";
+            this.ButtonRotateForward.UseVisualStyleBackColor = true;
+            this.ButtonRotateForward.Click += (sender, e) => Rotate_Click(sender, e, "forward");
+            // 
+            // ButtonRotateBack
+            // 
+            this.ButtonRotateBack.Location = new System.Drawing.Point(13, 613);
+            this.ButtonRotateBack.Name = "ButtonRotateBack";
+            this.ButtonRotateBack.Size = new System.Drawing.Size(183, 30);
+            this.ButtonRotateBack.TabIndex = 0;
+            this.ButtonRotateBack.Text = "Вращать назад";
+            this.ButtonRotateBack.UseVisualStyleBackColor = true;
+            this.ButtonRotateBack.Click += (sender, e) => Rotate_Click(sender, e, "back");
             // 
             // Form1
             // 
@@ -467,7 +478,8 @@ namespace ComputerGraphics1
             this.Controls.Add(this.buttonDeffaultPosition);
             this.Controls.Add(this.ButtonPrintLine);
             this.Controls.Add(this.ButtonDeleteLine);
-            this.Controls.Add(this.ButtonRotate);
+            this.Controls.Add(this.ButtonRotateForward);
+            this.Controls.Add(this.ButtonRotateBack);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Афинные преобразования";
@@ -482,7 +494,8 @@ namespace ComputerGraphics1
         private System.Windows.Forms.Button buttonDeffaultPosition;
         private System.Windows.Forms.Button ButtonPrintLine;
         private System.Windows.Forms.Button ButtonDeleteLine;
-        private System.Windows.Forms.Button ButtonRotate;
+        private System.Windows.Forms.Button ButtonRotateForward;
+        private System.Windows.Forms.Button ButtonRotateBack;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelLineForRotation;
         private System.Windows.Forms.Label labelX;

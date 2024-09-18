@@ -25,6 +25,10 @@ namespace ComputerGraphics1
         private int cenX;
         private int cenY;
         private Graphics _graphics;
+        private Timer rotationTimer;
+        private int rotationCount = 0; // Счетчик вращений
+        private const int totalRotations = 36; // Общее количество шагов для полного оборота (360 / 5)
+        private const float rotationStep = 10f; // Шаг вращения в градусах
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -434,86 +438,80 @@ namespace ComputerGraphics1
             DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
         }
 
-        /**
-         * Метод вращает букву вдоль оси Z в обе стороны
-         */
-        /*private void Rotate_Click(object sender, EventArgs e, string way)
+        private void Rotate_Click(object sender, EventArgs e, string direction)
         {
-            int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
+            rotationTimer = new Timer();
+            rotationTimer.Interval = 10; // Интервал в миллисекундах
+            float sign;
 
-            int sign;
-            if (way == "right")
-                sign = 1;
+            if (direction.ToLower() == "forward")
+                sign = 1f;
             else
-                sign = -1;
+                sign = -1f;
 
-            float[,] Rotate =
+            float angleStep = sign * rotationStep; // Угол шага вращения с учетом направления
+
+            rotationTimer.Tick += new EventHandler((o, ev) =>
             {
-                { ((float)(Math.Cos(angle))), -sign * ((float)(Math.Sin(angle))), 0, 0},
-                { sign * ((float)(Math.Sin(angle))), ((float)(Math.Cos(angle))), 0, 0},
-                { 0, 0, 1, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, Rotate);
-            DrawLetterB();
+                float angle = (float)(angleStep * Math.PI / 180); // Перевод в радианы
 
-        }*/
-        private void Rotate_Click(object sender, EventArgs e)
-        {
-            // Получаем угол вращения из текстового поля
-            int toRotate = Convert.ToInt32(RotateTextBox.Text);
-            float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
+                float x1 = previousX;
+                float y1 = previousY;
+                float z1 = previousZ;
+                float x2 = previousX1;
+                float y2 = previousY1;
+                float z2 = previousZ1;
 
-            // Получаем координаты двух точек для определения прямой
-            float x1 = previousX;
-            float y1 = previousY;
-            float z1 = previousZ;
-            float x2 = previousX1;
-            float y2 = previousY1;
-            float z2 = previousZ1;
+                // Определяем вектор направления прямой
+                float[] directionVector = { x2 - x1, y2 - y1, z2 - z1 };
 
-            // Определяем вектор направления прямой
-            float[] directionVector = { x2 - x1, y2 - y1, z2 - z1 };
+                // Нормализуем вектор направления
+                float length = (float)Math.Sqrt(directionVector[0] * directionVector[0] +
+                                                  directionVector[1] * directionVector[1] +
+                                                  directionVector[2] * directionVector[2]);
 
-            // Нормализуем вектор направления
-            float length = (float)Math.Sqrt(directionVector[0] * directionVector[0] +
-                                              directionVector[1] * directionVector[1] +
-                                              directionVector[2] * directionVector[2]);
+                if (length == 0) return; // Проверка на нулевой вектор
 
-            if (length == 0) return; // Проверка на нулевой вектор
+                directionVector[0] /= length;
+                directionVector[1] /= length;
+                directionVector[2] /= length;
 
-            directionVector[0] /= length;
-            directionVector[1] /= length;
-            directionVector[2] /= length;
+                // Создаем матрицу вращения относительно произвольной оси
+                float u = directionVector[0];
+                float v = directionVector[1];
+                float w = directionVector[2];
 
-            // Создаем матрицу вращения относительно произвольной оси
-            float u = directionVector[0];
-            float v = directionVector[1];
-            float w = directionVector[2];
+                float[,] rotationMatrix =
+                {
+            { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),
+              (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),
+              (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0 },
 
-            float[,] rotationMatrix =
-            {
-        { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),
-          (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),
-          (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0 },
+            { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),
+              (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),
+              (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0 },
 
-        { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),
-          (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),
-          (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0 },
+            { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),
+              (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),
+              (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0 },
 
-        { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),
-          (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),
-          (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0 },
+            { 0, 0, 0, 1 }
+        };
 
-        { 0, 0, 0, 1 }
-    };
+                // Применяем матрицу вращения к букве "Б"
+                LetterB = MultiplyMatrices(LetterB, rotationMatrix);
+                DrawLetterB();
+                rotationCount++;
 
-            // Применяем матрицу вращения к букве "Б"
-            LetterB = MultiplyMatrices(LetterB, rotationMatrix);
+                if (rotationCount >= totalRotations)
+                {
+                    rotationTimer.Stop();
+                    rotationCount = 0;
+                    return;
+                }
+            });
 
-            // Перерисовываем букву "Б"
-            DrawLetterB();
+            rotationTimer.Start();
         }
     }
 }
