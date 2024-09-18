@@ -1,4 +1,6 @@
-﻿namespace ComputerGraphics1
+﻿using System.Windows.Forms;
+
+namespace ComputerGraphics1
 {
     partial class Form1
     {
@@ -31,6 +33,7 @@
             this.buttonDeffaultPosition = new System.Windows.Forms.Button();
             this.ButtonPrintLine = new System.Windows.Forms.Button();
             this.ButtonDeleteLine = new System.Windows.Forms.Button();
+            this.ButtonRotate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.labelLineForRotation = new System.Windows.Forms.Label();
             this.labelX = new System.Windows.Forms.Label();
@@ -45,8 +48,6 @@
             this.CoordinateX1 = new System.Windows.Forms.TextBox();
             this.CoordinateY1 = new System.Windows.Forms.TextBox();
             this.CoordinateZ1 = new System.Windows.Forms.TextBox();
-            this.ButtonPrintLine = new System.Windows.Forms.Button();
-            this.ButtonDeleteLine = new System.Windows.Forms.Button();
             this.MoveTextBox = new System.Windows.Forms.TextBox();
             this.MovePlusX = new System.Windows.Forms.Button();
             this.MovePlusY = new System.Windows.Forms.Button();
@@ -406,13 +407,23 @@
             // 
             // ButtonDeleteLine
             // 
-            this.ButtonDeleteLine.Location = new System.Drawing.Point(13, 538);
+            this.ButtonDeleteLine.Location = new System.Drawing.Point(13, 543);
             this.ButtonDeleteLine.Name = "ButtonDeleteLine";
             this.ButtonDeleteLine.Size = new System.Drawing.Size(183, 30);
             this.ButtonDeleteLine.TabIndex = 0;
             this.ButtonDeleteLine.Text = "Удалить линию";
             this.ButtonDeleteLine.UseVisualStyleBackColor = true;
             this.ButtonDeleteLine.Click += new System.EventHandler(this.ButtonDeleteLine_Click);
+            // 
+            // ButtonRotate
+            // 
+            this.ButtonRotate.Location = new System.Drawing.Point(13, 578);
+            this.ButtonRotate.Name = "ButtonRotate";
+            this.ButtonRotate.Size = new System.Drawing.Size(183, 30);
+            this.ButtonRotate.TabIndex = 0;
+            this.ButtonRotate.Text = "Вращать";
+            this.ButtonRotate.UseVisualStyleBackColor = true;
+            this.ButtonRotate.Click += new System.EventHandler(this.Rotate_Click);
             // 
             // Form1
             // 
@@ -456,6 +467,7 @@
             this.Controls.Add(this.buttonDeffaultPosition);
             this.Controls.Add(this.ButtonPrintLine);
             this.Controls.Add(this.ButtonDeleteLine);
+            this.Controls.Add(this.ButtonRotate);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Афинные преобразования";
@@ -470,6 +482,7 @@
         private System.Windows.Forms.Button buttonDeffaultPosition;
         private System.Windows.Forms.Button ButtonPrintLine;
         private System.Windows.Forms.Button ButtonDeleteLine;
+        private System.Windows.Forms.Button ButtonRotate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelLineForRotation;
         private System.Windows.Forms.Label labelX;
