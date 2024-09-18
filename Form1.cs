@@ -22,19 +22,19 @@ namespace ComputerGraphics1
         private float previousX = 0, previousX1 = 0;
         private float previousY = 0, previousY1 = 0;
         private float previousZ = 0, previousZ1 = 0;
-        private int cenX;
-        private int cenY;
-        private Graphics _graphics;
+        private int centerX;
+        private int centerY;
+        private Graphics graphics;
         private Timer rotationTimer;
-        private int rotationCount = 0; // Счетчик вращений
-        private const int totalRotations = 36; // Общее количество шагов для полного оборота (360 / 5)
-        private const float rotationStep = 10f; // Шаг вращения в градусах
+        private int rotationCount = 0; 
+        private const int totalRotations = 36; 
+        private const float rotationStep = 10f; 
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
-            cenX = Size.Width / 2;
-            cenY = Size.Height / 2;
+            centerX = Size.Width / 2;
+            centerY = Size.Height / 2;
             SetDefaultPosition();
             // Кабинетное проецирование относительно центра правосторонней системы координат
             float[,] p =
@@ -42,7 +42,7 @@ namespace ComputerGraphics1
                 { 1, 0, 0, 0},
                 { 0, -1, 0, 0},
                 { -(float)(Math.Cos(Math.PI/4))/2, (float)(Math.Cos(Math.PI/4))/2, 0, 0},
-                { cenX, cenY, 0, 1}
+                { centerX, centerY, 0, 1}
             };
             proection = p;
             DrawLetterB();
@@ -66,8 +66,8 @@ namespace ComputerGraphics1
          */
         private void DrawAxis()
         {
-            _graphics = CreateGraphics();
-            _graphics.Clear(Color.White);
+            graphics = CreateGraphics();
+            graphics.Clear(Color.White);
             float[,] Axis =
             {
                 { 0, 0, 0, 1},
@@ -83,19 +83,19 @@ namespace ComputerGraphics1
             };
             Axis = MultiplyMatrices(Axis, proection);
             // Ось X
-            _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[1, 0], Axis[1, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[4, 0], Axis[4, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[5, 0], Axis[5, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[1, 0], Axis[1, 1]); // Сама прямая линия
+            graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[4, 0], Axis[4, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[1, 0], Axis[1, 1], Axis[5, 0], Axis[5, 1]);
             
             // Ось Y
-            _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[2, 0], Axis[2, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[6, 0], Axis[6, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[7, 0], Axis[7, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[2, 0], Axis[2, 1]); // Сама прямая линия
+            graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[6, 0], Axis[6, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[2, 0], Axis[2, 1], Axis[7, 0], Axis[7, 1]);
            
             // Ось Z
-            _graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[3, 0], Axis[3, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[8, 0], Axis[8, 1]);
-            _graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[9, 0], Axis[9, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[0, 0], Axis[0, 1], Axis[3, 0], Axis[3, 1]); // Сама прямая линия
+            graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[8, 0], Axis[8, 1]);
+            graphics.DrawLine(Pens.Gray, Axis[3, 0], Axis[3, 1], Axis[9, 0], Axis[9, 1]);
             
         }
 
@@ -105,7 +105,7 @@ namespace ComputerGraphics1
          */
         private void SetDefaultPosition()
         {
-            float[,] DefB =
+            float[,] B =
             {
                 { 0, 0, 0, 1 },      //A - 0
                 { 0, 100, 0, 1 },    //B - 1
@@ -132,7 +132,7 @@ namespace ComputerGraphics1
                 { 50, 40, 10, 1 },   //K' - 22
                 { 50, 10, 10, 1 },   //L' - 23
             };
-            LetterB = DefB;
+            LetterB = B;
         }
 
         /**
@@ -140,7 +140,7 @@ namespace ComputerGraphics1
          */
         private void DrawLetterB()
         {
-            _graphics = CreateGraphics();
+            graphics = CreateGraphics();
             DrawAxis();
             float[,] matrixDraw = MultiplyMatrices(LetterB, proection);
 
@@ -148,27 +148,27 @@ namespace ComputerGraphics1
             for (int i = 0; i < 11; i++)
             {
                 if(i != 7)
-                    _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
+                    graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
             }
 
             // Рисуем линии для верхней части буквы
             for (int i = 12; i < 23; i++)
             {
                 if(i != 19)
-                    _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
+                    graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
             }
 
             // Соединяем нижнюю и верхнюю части
             for (int i = 0; i < 12; i++) 
             {
-                _graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 12, 0], matrixDraw[i + 12, 1]);
+                graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 12, 0], matrixDraw[i + 12, 1]);
             }
 
             // Дополнительные соединения для завершения буквы
-            _graphics.DrawLine(Pens.Red, matrixDraw[0, 0], matrixDraw[0, 1], matrixDraw[7, 0], matrixDraw[7, 1]); // A - H
-            _graphics.DrawLine(Pens.Red, matrixDraw[12, 0], matrixDraw[12, 1], matrixDraw[19, 0], matrixDraw[19, 1]); // A' - H'
-            _graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[8, 0], matrixDraw[8, 1]);   // I - L
-            _graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I' - L'
+            graphics.DrawLine(Pens.Red, matrixDraw[0, 0], matrixDraw[0, 1], matrixDraw[7, 0], matrixDraw[7, 1]); // A - H
+            graphics.DrawLine(Pens.Red, matrixDraw[12, 0], matrixDraw[12, 1], matrixDraw[19, 0], matrixDraw[19, 1]); // A' - H'
+            graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[8, 0], matrixDraw[8, 1]);   // I - L
+            graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I' - L'
         }
 
         /**
@@ -416,9 +416,7 @@ namespace ComputerGraphics1
          */
         private void DrawLineBetweenPoints(float x1, float y1, float z1, float x2, float y2, float z2, Pen color)
         {
-            // Создаем графику для отрисовки
-            //_graphics = CreateGraphics();
-
+            graphics = CreateGraphics();
             float[,] point1 = { { x1, y1, z1, 1 } };
             float[,] point2 = { { x2, y2, z2, 1 } };
 
@@ -426,7 +424,7 @@ namespace ComputerGraphics1
             point2 = MultiplyMatrices(point2, proection);
 
             // Рисуем линию между преобразованными точками
-            _graphics.DrawLine(color, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
+            graphics.DrawLine(color, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
 
         }
 
@@ -438,6 +436,10 @@ namespace ComputerGraphics1
             DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
         }
 
+        /**
+         * Результатом вызова метода является одно вращение на 360 градусов
+         * относительно заданной прямой в любую сторону
+         */
         private void Rotate_Click(object sender, EventArgs e, string direction)
         {
             rotationTimer = new Timer();
@@ -467,8 +469,8 @@ namespace ComputerGraphics1
 
                 // Нормализуем вектор направления
                 float length = (float)Math.Sqrt(directionVector[0] * directionVector[0] +
-                                                  directionVector[1] * directionVector[1] +
-                                                  directionVector[2] * directionVector[2]);
+                                                directionVector[1] * directionVector[1] +
+                                                directionVector[2] * directionVector[2]);
 
                 if (length == 0) return; // Проверка на нулевой вектор
 
@@ -499,11 +501,12 @@ namespace ComputerGraphics1
                     },
 
                     { 0, 0, 0, 1 }
-        };
+                };
 
                 // Применяем матрицу вращения к букве "Б"
                 LetterB = MultiplyMatrices(LetterB, rotationMatrix);
                 DrawLetterB();
+                DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.Blue);
                 rotationCount++;
 
                 if (rotationCount >= totalRotations)
