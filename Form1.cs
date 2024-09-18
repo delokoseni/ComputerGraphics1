@@ -406,11 +406,14 @@ namespace ComputerGraphics1
             //_graphics = CreateGraphics();
 
             // Применяем проекцию к точкам
-            float[,] point1 = { { x1 }, { y1 }, { z1 }, { 1 } };
-            float[,] point2 = { { x2 }, { y2 }, { z2 }, { 1 } };
+            float[,] point1 = { { x1, y1, z1, 1 } };
+            float[,] point2 = { { x2, y2, z2, 1 } };
+
+            point1 = MultiplyMatrices(point1, proection);
+            point2 = MultiplyMatrices(point2, proection);
 
             // Рисуем линию между преобразованными точками
-            _graphics.DrawLine(Pens.Red, point1[0, 0], point1[1, 0], point2[0, 0], point2[1, 0]);
+            _graphics.DrawLine(Pens.DarkGray, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
 
         }
 
