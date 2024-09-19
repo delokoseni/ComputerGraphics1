@@ -36,12 +36,16 @@ namespace ComputerGraphics1
             centerX = Size.Width / 2;
             centerY = Size.Height / 2;
             SetDefaultPosition();
-            // Кабинетное проецирование относительно центра правосторонней системы координат
+            /** 
+             * Кабинетное проецирование относительно центра прямоугольной системы координат
+             * Вместо -Sin45 используется Cos45 так как в противном случае ось Z будет уходить в плоскость
+             * внутрь экрана
+            */
             float[,] p =
             {
                 { 1, 0, 0, 0},
                 { 0, -1, 0, 0},
-                { -(float)(Math.Cos(Math.PI/4))/2, (float)(Math.Cos(Math.PI/4))/2, 0, 0},
+                { -(float)(Math.Cos(Math.PI/4))/2, (float)(Math.Cos(Math.PI/4))/2, 0, 0},  
                 { centerX, centerY, 0, 1}
             };
             proection = p;
@@ -70,10 +74,10 @@ namespace ComputerGraphics1
             graphics.Clear(Color.White);
             float[,] Axis =
             {
-                { 0, 0, 0, 1},
-                { 500, 0, 0, 1},
-                { 0, 400, 0, 1},
-                { 0, 0, 500, 1},
+                { 0, 0, 0, 1},      // Начало оси (0, 0, 0) - точка
+                { 500, 0, 0, 1},    // Конец оси X (500, 0, 0)
+                { 0, 400, 0, 1},    // Конец оси Y (0, 400, 0)
+                { 0, 0, 500, 1},    // Конец оси Z (0, 0, 500)
                 { 490, 5, 0, 1},
                 { 490, -5, 0, 1},
                 { 5, 390, 0, 1},
@@ -485,19 +489,19 @@ namespace ComputerGraphics1
 
                 float[,] rotationMatrix =
                 {
-                    { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),
-                      (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),
-                      (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0 
+                    { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),         //
+                      (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),     // Вращение по X
+                      (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0   //
                     },
 
-                    { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),
-                      (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),
-                      (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0 
-                    },
+                    { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),     //
+                      (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),         // Вращение по Y
+                      (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0   //
+                    },      
 
-                    { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),
-                      (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),
-                      (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0 
+                    { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),     //
+                      (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),     // Вращение по Z
+                      (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0       //
                     },
 
                     { 0, 0, 0, 1 }
