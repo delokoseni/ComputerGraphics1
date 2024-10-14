@@ -19,22 +19,28 @@ namespace ComputerGraphics1
         }
         private float[,] LetterB;
         private float[,] proection;
-        private float previousX = 0, previousX1 = 0;
-        private float previousY = 0, previousY1 = 0;
-        private float previousZ = 0, previousZ1 = 0;
         private int centerX;
         private int centerY;
         private Graphics graphics;
-        private Timer rotationTimer;
-        private int rotationCount = 0; 
-        private const int totalRotations = 36; 
-        private const float rotationStep = 10f; 
+        private bool RotatingX, RotatingY, RotatingZ;
+        private Timer rotateXTimer = new Timer();
+        private Timer rotateYTimer = new Timer();
+        private Timer rotateZTimer = new Timer();
+        private bool isRotatingX = false;
+        private bool isRotatingY = false;
+        private bool isRotatingZ = false;
+        private string rotateXDirection;
+        private string rotateYDirection;
+        private string rotateZDirection;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
             centerX = Size.Width / 2;
             centerY = Size.Height / 2;
+            RotatingX = false;
+            RotatingY = false;
+            RotatingZ = false;
             SetDefaultPosition();
             /** 
              * Кабинетное проецирование относительно центра прямоугольной системы координат
@@ -50,7 +56,43 @@ namespace ComputerGraphics1
             };
             proection = p;
             DrawLetterB();
+
+            rotateXTimer.Interval = 100; // Интервал в миллисекундах, можно настроить по своему усмотрению
+
+            rotateYTimer.Interval = 100;
+
+            rotateZTimer.Interval = 100;
+
+            rotateXTimer.Tick += RotateXTimer_Tick;
+            rotateYTimer.Tick += RotateYTimer_Tick;
+            rotateZTimer.Tick += RotateZTimer_Tick;
+
         }
+
+        private void RotateXTimer_Tick(object sender, EventArgs e)
+        {
+            if (isRotatingX)
+            {
+                RotateX_Click(rotateXDirection);
+            }
+        }
+
+        private void RotateYTimer_Tick(object sender, EventArgs e)
+        {
+            if (isRotatingY)
+            {
+                RotateY_Click(rotateYDirection);
+            }
+        }
+
+        private void RotateZTimer_Tick(object sender, EventArgs e)
+        {
+            if (isRotatingZ)
+            {
+                RotateZ_Click(rotateZDirection);
+            }
+        }
+
 
         /**
          * Метод для умножения матриц 
@@ -186,81 +228,9 @@ namespace ComputerGraphics1
         }
 
         /**
-         * Метод передвигающий букву вдоль оси X
-         */
-        private void MoveX_Click(object sender, EventArgs e, bool sign)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
-
-            int PlusOrMinus;
-            if (sign)
-                PlusOrMinus = 1;
-            else
-                PlusOrMinus = -1;
-
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { PlusOrMinus * toMove, 0, 0, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, Move);
-            DrawLetterB();
-        }
-
-        /**
-         * Метод передвигающий букву вдоль оси Y
-         */
-        private void MoveY_Click(object sender, EventArgs e, bool sign)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
-
-            int PlusOrMinus;
-            if (sign)
-                PlusOrMinus = 1;
-            else
-                PlusOrMinus = -1;
-
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, PlusOrMinus * toMove, 0, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, Move);
-            DrawLetterB();
-        }
-
-        /**
-         * Метод передвигающий букву вдоль оси Z
-         */
-        private void MoveZ_Click(object sender, EventArgs e, bool sign)
-        {
-            int toMove = Convert.ToInt32(MoveTextBox.Text);
-
-            int PlusOrMinus;
-            if (sign)
-                PlusOrMinus = 1;
-            else
-                PlusOrMinus = -1;
-
-            float[,] Move =
-            {
-                { 1, 0, 0, 0},
-                { 0, 1, 0, 0},
-                { 0, 0, 1, 0},
-                { 0, 0, PlusOrMinus * toMove, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, Move);
-            DrawLetterB();
-        }
-
-        /**
          * Метод вращает букву вдоль оси X в обе стороны
          */
-        private void RotateX_Click(object sender, EventArgs e, string way)
+        private void RotateX_Click(string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
             float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
@@ -285,7 +255,7 @@ namespace ComputerGraphics1
         /**
          * Метод вращает букву вдоль оси Y в обе стороны
          */
-        private void RotateY_Click(object sender, EventArgs e, string way)
+        private void RotateY_Click(string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
             float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
@@ -310,7 +280,7 @@ namespace ComputerGraphics1
         /**
          * Метод вращает букву вдоль оси Z в обе стороны
          */
-        private void RotateZ_Click(object sender, EventArgs e, string way)
+        private void RotateZ_Click(string way)
         {
             int toRotate = Convert.ToInt32(RotateTextBox.Text);
             float angle = (float)(toRotate * Math.PI / 180); // Перевод в радианы
@@ -333,195 +303,83 @@ namespace ComputerGraphics1
 
         }
 
-        /**
-         * Метод отражающий букву относительно плоскостей XY, XZ, YZ
-         */
-        private void Reflection(object sender, EventArgs e, string plane)
+        private void RotateRightX_MouseDown(object sender, MouseEventArgs e)
         {
-            int X = 1, Y = 1, Z = 1;
-            if (plane == "YZ")
-                X = -1;
-            else if (plane == "XZ")
-                Y = -1;
-            else
-                Z = -1;
-
-            float[,] Mirror =
-            {
-                { X * 1, 0, 0, 0},
-                { 0, Y * 1, 0, 0},
-                { 0, 0, Z * 1, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, Mirror);
-            DrawLetterB();
+            isRotatingX = true;
+            rotateXDirection = "right";
+            rotateXTimer.Start();
         }
 
-        /**
-         * Метод для изменения размеров буквы
-         */
-        private void Scaling_Click(object sender, EventArgs e, bool sign)
+        private void RotateRightX_MouseUp(object sender, MouseEventArgs e)
         {
-            float PlusOrMinus;
-            if (sign)
-                PlusOrMinus = 2.0f;
-            else
-                PlusOrMinus = 0.5f;
-
-            float[,] scaling =
-            {
-                { PlusOrMinus*1f, 0, 0, 0},
-                { 0, PlusOrMinus*1f, 0, 0},
-                { 0, 0, PlusOrMinus*1f, 0},
-                { 0, 0, 0, 1}
-            };
-            LetterB = MultiplyMatrices(LetterB, scaling);
-            DrawLetterB();
+            isRotatingX = false;
+            rotateXTimer.Stop();
         }
 
-        /**
-         * Метод для обработки нажатия на кнопку ButtonPrintLine
-         */
-        private void ButtonPrintLine_Click(object sender, EventArgs e)
+        private void RotateLeftX_MouseDown(object sender, MouseEventArgs e)
         {
-            // Получаем координаты из текстовых полей
-            if (float.TryParse(CoordinateX.Text, out float x1) &&
-                float.TryParse(CoordinateY.Text, out float y1) &&
-                float.TryParse(CoordinateZ.Text, out float z1) &&
-                float.TryParse(CoordinateX1.Text, out float x2) &&
-                float.TryParse(CoordinateY1.Text, out float y2) &&
-                float.TryParse(CoordinateZ1.Text, out float z2))
-            {
-                // Проверяем, что точки не совпадают
-                if (x1 != x2 || y1 != y2 || z1 != z2)
-                {
-                    DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
-                    DrawLineBetweenPoints(x1, y1, z1, x2, y2, z2, Pens.Blue);
-                    previousX = x1;
-                    previousX1 = x2;
-                    previousY = y1;
-                    previousY1 = y2;
-                    previousZ = z1;
-                    previousZ1 = z2;
-                }
-                else
-                {
-                    MessageBox.Show("Координаты двух точек не должны совпадать.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, введите корректные координаты.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            isRotatingX = true;
+            rotateXDirection = "left";
+            rotateXTimer.Start();
         }
 
-        /**
-         * Метод отображающий прямую между двумя точками по заданным координатам
-         */
-        private void DrawLineBetweenPoints(float x1, float y1, float z1, float x2, float y2, float z2, Pen color)
+        private void RotateLeftX_MouseUp(object sender, MouseEventArgs e)
         {
-            graphics = CreateGraphics();
-            float[,] point1 = { { x1, y1, z1, 1 } };
-            float[,] point2 = { { x2, y2, z2, 1 } };
-
-            point1 = MultiplyMatrices(point1, proection);
-            point2 = MultiplyMatrices(point2, proection);
-
-            // Рисуем линию между преобразованными точками
-            graphics.DrawLine(color, point1[0, 0], point1[0, 1], point2[0, 0], point2[0, 1]);
-
+            isRotatingX = false;
+            rotateXTimer.Stop();
         }
 
-        /**
-         * Метод для обработки нажатия на кнопку ButtonPrintLine
-         */
-        private void ButtonDeleteLine_Click(object sender, EventArgs e)
+        private void RotateRightY_MouseDown(object sender, MouseEventArgs e)
         {
-            DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.White);
+            isRotatingY = true;
+            rotateYDirection = "right";
+            rotateYTimer.Start();
         }
 
-        /**
-         * Результатом вызова метода является одно вращение на 360 градусов
-         * относительно заданной прямой в любую сторону
-         */
-        private void Rotate_Click(object sender, EventArgs e, string direction)
+        private void RotateRightY_MouseUp(object sender, MouseEventArgs e)
         {
-            rotationTimer = new Timer();
-            rotationTimer.Interval = 10; // Интервал в миллисекундах
-            float sign;
-
-            if (direction.ToLower() == "forward")
-                sign = 1f;
-            else
-                sign = -1f;
-
-            float angleStep = sign * rotationStep; // Угол шага вращения с учетом направления
-
-            rotationTimer.Tick += new EventHandler((o, ev) =>
-            {
-                float angle = (float)(angleStep * Math.PI / 180); // Перевод в радианы
-
-                float x1 = previousX;
-                float y1 = previousY;
-                float z1 = previousZ;
-                float x2 = previousX1;
-                float y2 = previousY1;
-                float z2 = previousZ1;
-
-                // Определяем вектор направления прямой
-                float[] directionVector = { x2 - x1, y2 - y1, z2 - z1 };
-
-                // Нормализуем вектор направления
-                float length = (float)Math.Sqrt(directionVector[0] * directionVector[0] +
-                                                directionVector[1] * directionVector[1] +
-                                                directionVector[2] * directionVector[2]);
-
-                if (length == 0) return; // Проверка на нулевой вектор
-
-                directionVector[0] /= length;
-                directionVector[1] /= length;
-                directionVector[2] /= length;
-
-                // Создаем матрицу вращения относительно произвольной оси
-                float u = directionVector[0];
-                float v = directionVector[1];
-                float w = directionVector[2];
-
-                float[,] rotationMatrix =
-                {
-                    { (float)(Math.Cos(angle) + u * u * (1 - Math.Cos(angle))),         //
-                      (float)(u * v * (1 - Math.Cos(angle)) - w * Math.Sin(angle)),     // Вращение по X
-                      (float)(u * w * (1 - Math.Cos(angle)) + v * Math.Sin(angle)), 0   //
-                    },
-
-                    { (float)(v * u * (1 - Math.Cos(angle)) + w * Math.Sin(angle)),     //
-                      (float)(Math.Cos(angle) + v * v * (1 - Math.Cos(angle))),         // Вращение по Y
-                      (float)(v * w * (1 - Math.Cos(angle)) - u * Math.Sin(angle)), 0   //
-                    },      
-
-                    { (float)(w * u * (1 - Math.Cos(angle)) - v * Math.Sin(angle)),     //
-                      (float)(w * v * (1 - Math.Cos(angle)) + u * Math.Sin(angle)),     // Вращение по Z
-                      (float)(Math.Cos(angle) + w * w * (1 - Math.Cos(angle))), 0       //
-                    },
-
-                    { 0, 0, 0, 1 }
-                };
-
-                // Применяем матрицу вращения к букве "Б"
-                LetterB = MultiplyMatrices(LetterB, rotationMatrix);
-                DrawLetterB();
-                DrawLineBetweenPoints(previousX, previousY, previousZ, previousX1, previousY1, previousZ1, Pens.Blue);
-                rotationCount++;
-
-                if (rotationCount >= totalRotations)
-                {
-                    rotationTimer.Stop();
-                    rotationCount = 0;
-                    return;
-                }
-            });
-
-            rotationTimer.Start();
+            isRotatingY = false;
+            rotateYTimer.Stop();
         }
+
+        private void RotateLeftY_MouseDown(object sender, MouseEventArgs e)
+        {
+            isRotatingY = true;
+            rotateYDirection = "left";
+            rotateYTimer.Start();
+        }
+
+        private void RotateLeftY_MouseUp(object sender, MouseEventArgs e)
+        {
+            isRotatingY = false;
+            rotateYTimer.Stop();
+        }
+
+        private void RotateRightZ_MouseDown(object sender, MouseEventArgs e)
+        {
+            isRotatingZ = true;
+            rotateZDirection = "right";
+            rotateZTimer.Start();
+        }
+
+        private void RotateRightZ_MouseUp(object sender, MouseEventArgs e)
+        {
+            isRotatingZ = false;
+            rotateZTimer.Stop();
+        }
+
+        private void RotateLeftZ_MouseDown(object sender, MouseEventArgs e)
+        {
+            isRotatingZ = true;
+            rotateZDirection = "left";
+            rotateZTimer.Start();
+        }
+
+        private void RotateLeftZ_MouseUp(object sender, MouseEventArgs e)
+        {
+            isRotatingZ = false;
+            rotateZTimer.Stop();
+        }
+
     }
 }
