@@ -17,7 +17,7 @@ namespace ComputerGraphics1
         {
             InitializeComponent();
         }
-        private float[,] LetterB;
+        private float[,] Figure;
         private float[,] proection;
         private int centerX;
         private int centerY;
@@ -55,7 +55,7 @@ namespace ComputerGraphics1
                 { centerX, centerY, 0, 1}
             };
             proection = p;
-            DrawLetterB();
+            DrawCube();
 
             rotateXTimer.Interval = 100; // Интервал в миллисекундах, можно настроить по своему усмотрению
 
@@ -92,7 +92,6 @@ namespace ComputerGraphics1
                 RotateZ_Click(rotateZDirection);
             }
         }
-
 
         /**
          * Метод для умножения матриц 
@@ -147,75 +146,50 @@ namespace ComputerGraphics1
 
         /**
          * Метод устанавливающий начальные значения для точек 
-         * из которых строится буква Б
+         * из которых строится куб
          */
         private void SetDefaultPosition()
         {
-            float[,] B =
+            float[,] f =
             {
-                { 0, 0, 0, 1 },      //A - 0
-                { 0, 100, 0, 1 },    //B - 1
-                { 60, 100, 0, 1 },   //C - 2
-                { 60, 80, 0, 1 },    //D - 3
-                { 20, 80, 0, 1 },    //E - 4
-                { 20, 50, 0, 1 },    //F - 5
-                { 60, 50, 0, 1 },    //G - 6
-                { 60, 0, 0, 1 },     //H - 7
-                { 20, 10, 0, 1 },    //I - 8
-                { 20, 40, 0, 1 },    //J - 9
-                { 50, 40, 0, 1 },    //K - 10
-                { 50, 10, 0, 1 },    //L - 11
-                { 0, 0, 10, 1 },     //A' - 12
-                { 0, 100, 10, 1 },   //B' - 13
-                { 60, 100, 10, 1 },  //C' - 14
-                { 60, 80, 10, 1 },   //D' - 15
-                { 20, 80, 10, 1 },   //E' - 16
-                { 20, 50, 10, 1 },   //F' - 17
-                { 60, 50, 10, 1 },   //G' - 18
-                { 60, 0, 10, 1 },    //H' - 19
-                { 20, 10, 10, 1 },   //I' - 20
-                { 20, 40, 10, 1 },   //J' - 21 
-                { 50, 40, 10, 1 },   //K' - 22
-                { 50, 10, 10, 1 },   //L' - 23
+                { 0, 0, 100, 1 },      //A - 0
+                { 0, 100, 100, 1 },    //B - 1
+                { 100, 100, 100, 1 },   //C - 2
+                { 100, 0, 100, 1 },    //D - 3
+                { 0, 0, 0, 1 },    //E - 4
+                { 0, 100, 0, 1 },    //F - 5
+                { 100, 100, 0, 1 },    //G - 6
+                { 100, 0, 0, 1 },     //H - 7
             };
-            LetterB = B;
+            Figure = f;
         }
 
         /**
-         * Метод для отрисовки проекции буквы
+         * Метод для отрисовки проекции куба
          */
-        private void DrawLetterB()
+        private void DrawCube()
         {
             graphics = CreateGraphics();
             DrawAxis();
-            float[,] matrixDraw = MultiplyMatrices(LetterB, proection);
+            float[,] matrixDraw = MultiplyMatrices(Figure, proection);
 
-            // Рисуем линии для нижней части буквы
-            for (int i = 0; i < 11; i++)
+            // Определяем соединения между вершинами куба
+            int[,] edges = new int[,]
             {
-                if(i != 7)
-                    graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
-            }
+                { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 }, // Передняя грань
+                { 4, 5 }, { 5, 6 }, { 6, 7 }, { 7, 4 }, // Задняя грань
+                { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 }  // Соединения между гранями
+            };
 
-            // Рисуем линии для верхней части буквы
-            for (int i = 12; i < 23; i++)
+            // Рисуем линии для соединений
+            for (int i = 0; i < edges.GetLength(0); i++)
             {
-                if(i != 19)
-                    graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 1, 0], matrixDraw[i + 1, 1]);
+                int start = edges[i, 0];
+                int end = edges[i, 1];
+                graphics.DrawLine(Pens.Red, matrixDraw[start, 0], matrixDraw[start, 1], matrixDraw[end, 0], matrixDraw[end, 1]);
             }
-
-            // Соединяем нижнюю и верхнюю части
-            for (int i = 0; i < 12; i++) 
-            {
-                graphics.DrawLine(Pens.Red, matrixDraw[i, 0], matrixDraw[i, 1], matrixDraw[i + 12, 0], matrixDraw[i + 12, 1]);
-            }
-
-            // Дополнительные соединения для завершения буквы
-            graphics.DrawLine(Pens.Red, matrixDraw[0, 0], matrixDraw[0, 1], matrixDraw[7, 0], matrixDraw[7, 1]); // A - H
-            graphics.DrawLine(Pens.Red, matrixDraw[12, 0], matrixDraw[12, 1], matrixDraw[19, 0], matrixDraw[19, 1]); // A' - H'
-            graphics.DrawLine(Pens.Red, matrixDraw[11, 0], matrixDraw[11, 1], matrixDraw[8, 0], matrixDraw[8, 1]);   // I - L
-            graphics.DrawLine(Pens.Red, matrixDraw[23, 0], matrixDraw[23, 1], matrixDraw[20, 0], matrixDraw[20, 1]); // I' - L'
         }
+
 
         /**
          * Метод обрабатывает событие нажатия на кнопку buttonDeffaultPosition
@@ -224,7 +198,7 @@ namespace ComputerGraphics1
         private void buttonDeffaultPosition_Click(object sender, EventArgs e)
         {
             SetDefaultPosition();
-            DrawLetterB();
+            DrawCube();
         }
 
         /**
@@ -248,8 +222,8 @@ namespace ComputerGraphics1
                 { 0, -sign * (float)(Math.Sin(angle)), (float)(Math.Cos(angle)), 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = MultiplyMatrices(LetterB, Rotate);
-            DrawLetterB();
+            Figure = MultiplyMatrices(Figure, Rotate);
+            DrawCube();
         }
 
         /**
@@ -273,8 +247,8 @@ namespace ComputerGraphics1
                 { -sign * ((float)(Math.Sin(angle))), 0, ((float)(Math.Cos(angle))), 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = MultiplyMatrices(LetterB, Rotate);
-            DrawLetterB();
+            Figure = MultiplyMatrices(Figure, Rotate);
+            DrawCube();
         }
 
         /**
@@ -298,8 +272,8 @@ namespace ComputerGraphics1
                 { 0, 0, 1, 0},
                 { 0, 0, 0, 1}
             };
-            LetterB = MultiplyMatrices(LetterB, Rotate);
-            DrawLetterB();
+            Figure = MultiplyMatrices(Figure, Rotate);
+            DrawCube();
 
         }
 
