@@ -60,10 +60,10 @@ namespace ComputerGraphics1
             {
                 { 0, 1, 2, 3 }, // Передняя грань (A-B-C-D)
                 { 4, 5, 6, 7 }, // Задняя грань (E-F-G-H)
-                { 0, 1, 5, 4 }, // Левая грань (A-B-F-E)
-                { 2, 3, 7, 6 }, // Правая грань (C-D-H-G)
-                { 1, 2, 6, 5 }, // Верхняя грань (B-C-G-F)
-                { 0, 3, 7, 4 }  // Нижняя грань (A-D-H-E)
+                { 0, 4, 7, 3 }, // Левая грань (A-B-F-E)
+                { 1, 5, 6, 2 }, // Правая грань (C-D-H-G)
+                { 0, 1, 5, 4 }, // Верхняя грань (B-C-G-F)
+                { 3, 2, 6, 7 }  // Нижняя грань (A-D-H-E)
             };
 
             faces = cubefaces;
@@ -165,14 +165,14 @@ namespace ComputerGraphics1
         {
             float[,] f =
             {
-                { 0, 0, 100, 1 },      //A - 0
-                { 0, 100, 100, 1 },    //B - 1
-                { 100, 100, 100, 1 },  //C - 2
-                { 100, 0, 100, 1 },    //D - 3
-                { 0, 0, 0, 1 },        //E - 4
-                { 0, 100, 0, 1 },      //F - 5
-                { 100, 100, 0, 1 },    //G - 6
-                { 100, 0, 0, 1 },      //H - 7
+                { 50, 50, 50, 1 },      //A - 0
+                { -50, 50, 50, 1 },    //B - 1
+                { -50, -50, 50, 1 },  //C - 2
+                { 50, -50, 50, 1 },    //D - 3
+                { 50, 50, -50, 1 },        //E - 4
+                { -50, 50, -50, 1 },      //F - 5
+                { -50, -50, -50, 1 },    //G - 6
+                { 50, -50, -50, 1 },      //H - 7
             };
             Figure = f;
         }
@@ -226,27 +226,23 @@ namespace ComputerGraphics1
                 vertices[i] = new Vector(matrixDraw[i, 0], matrixDraw[i, 1], Figure[i, 2]); // Использование оригинальной координаты Z
             }
 
-            Vector observer = new Vector(150, 150, 500); // Наблюдатель на дистанции по оси Z
+            Vector observer = new Vector(101, 101, 101); // Наблюдатель на дистанции по оси Z
 
-            // Определяем соединения между вершинами куба (каждая грань состоит из 4 точек)
-            int[,] edges = new int[,]
+            // Проверяем видимость каждой грани и рисуем её рёбра, если грань видима
+            for (int i = 0; i < faces.GetLength(0); i++)
             {
-                { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 },
-                { 4, 5 }, { 5, 6 }, { 6, 7 }, { 7, 4 },
-                { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 }
-            };
-
-            // Рисуем линии для соединений
-            for (int i = 0; i < edges.GetLength(0); i++)
-            {
-                int start = edges[i, 0];
-                int end = edges[i, 1];
-                if (IsEdgeVisible(start, end, observer, vertices))
+                int[] face = { faces[i, 0], faces[i, 1], faces[i, 2], faces[i, 3] };
+                if (IsVisible(face, observer))
                 {
-                    graphics.DrawLine(Pens.Red, matrixDraw[start, 0], matrixDraw[start, 1], matrixDraw[end, 0], matrixDraw[end, 1]);
+                    // Рисуем рёбра для видимой грани
+                    graphics.DrawLine(Pens.Red, matrixDraw[faces[i, 0], 0], matrixDraw[faces[i, 0], 1], matrixDraw[faces[i, 1], 0], matrixDraw[faces[i, 1], 1]);
+                    graphics.DrawLine(Pens.Red, matrixDraw[faces[i, 1], 0], matrixDraw[faces[i, 1], 1], matrixDraw[faces[i, 2], 0], matrixDraw[faces[i, 2], 1]);
+                    graphics.DrawLine(Pens.Red, matrixDraw[faces[i, 2], 0], matrixDraw[faces[i, 2], 1], matrixDraw[faces[i, 3], 0], matrixDraw[faces[i, 3], 1]);
+                    graphics.DrawLine(Pens.Red, matrixDraw[faces[i, 3], 0], matrixDraw[faces[i, 3], 1], matrixDraw[faces[i, 0], 0], matrixDraw[faces[i, 0], 1]);
                 }
             }
         }
+
 
         /**
          * Метод обрабатывает событие нажатия на кнопку buttonDeffaultPosition
@@ -466,6 +462,18 @@ namespace ComputerGraphics1
             normal.x *= sign;
             normal.y *= sign;
             normal.z *= sign;
+
+            bool isVisible = VectorDotProduct(normal, observer) + D > 0;
+
+            // Вывод в консоль
+            if (isVisible)
+            {
+                Console.WriteLine($"Face {string.Join(",", face)} is visible.");
+            }
+            else
+            {
+                Console.WriteLine($"Face {string.Join(",", face)} is not visible.");
+            }
             return VectorDotProduct(normal, observer) + D > 0;
         }
     }
