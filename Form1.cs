@@ -56,6 +56,17 @@ namespace ComputerGraphics1
                 { centerX, centerY, 0, 1}
             };
             proection = p;
+            int[,] cubefaces = new int[,]
+            {
+                { 0, 1, 2, 3 }, // Передняя грань (A-B-C-D)
+                { 4, 5, 6, 7 }, // Задняя грань (E-F-G-H)
+                { 0, 1, 5, 4 }, // Левая грань (A-B-F-E)
+                { 2, 3, 7, 6 }, // Правая грань (C-D-H-G)
+                { 1, 2, 6, 5 }, // Верхняя грань (B-C-G-F)
+                { 0, 3, 7, 4 }  // Нижняя грань (A-D-H-E)
+            };
+
+            faces = cubefaces;
             DrawCube();
 
             rotateXTimer.Interval = 100; // Интервал в миллисекундах, можно настроить по своему усмотрению
@@ -68,17 +79,7 @@ namespace ComputerGraphics1
             rotateYTimer.Tick += RotateYTimer_Tick;
             rotateZTimer.Tick += RotateZTimer_Tick;
 
-            int[,] cubefaces = new int[,]
-            {
-                { 0, 1, 2, 3 }, // Передняя грань (A-B-C-D)
-                { 4, 5, 6, 7 }, // Задняя грань (E-F-G-H)
-                { 0, 1, 5, 4 }, // Левая грань (A-B-F-E)
-                { 2, 3, 7, 6 }, // Правая грань (C-D-H-G)
-                { 1, 2, 6, 5 }, // Верхняя грань (B-C-G-F)
-                { 0, 3, 7, 4 }  // Нижняя грань (A-D-H-E)
-            };
-
-            faces = cubefaces;
+            
         }
 
         private void RotateXTimer_Tick(object sender, EventArgs e)
@@ -179,18 +180,60 @@ namespace ComputerGraphics1
         /**
          * Метод для отрисовки проекции куба
          */
-        /*private void DrawCube()
+        private bool IsEdgeVisible(int start, int end, Vector observer, Vector[] vertices)
+        {
+            for (int i = 0; i < faces.GetLength(0); i++)
+            {
+                int[] face = { faces[i, 0], faces[i, 1], faces[i, 2], faces[i, 3] };
+
+                if ((face[0] == start || face[0] == end) &&
+                    (face[1] == start || face[1] == end) &&
+                    IsVisible(face, observer))
+                {
+                    return true;
+                }
+                if ((face[2] == start || face[2] == end) &&
+                    (face[1] == start || face[1] == end) &&
+                    IsVisible(face, observer))
+                {
+                    return true;
+                }
+                if ((face[3] == start || face[3] == end) &&
+                    (face[2] == start || face[2] == end) &&
+                    IsVisible(face, observer))
+                {
+                    return true;
+                }
+                if ((face[3] == start || face[3] == end) &&
+                    (face[0] == start || face[0] == end) &&
+                    IsVisible(face, observer))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void DrawCube()
         {
             graphics = CreateGraphics();
             DrawAxis();
             float[,] matrixDraw = MultiplyMatrices(Figure, proection);
 
-            // Определяем соединения между вершинами куба
+            Vector[] vertices = new Vector[8];
+            for (int i = 0; i < 8; i++)
+            {
+                vertices[i] = new Vector(matrixDraw[i, 0], matrixDraw[i, 1], Figure[i, 2]); // Использование оригинальной координаты Z
+            }
+
+            Vector observer = new Vector(150, 150, 500); // Наблюдатель на дистанции по оси Z
+
+            // Определяем соединения между вершинами куба (каждая грань состоит из 4 точек)
             int[,] edges = new int[,]
             {
-                { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 }, // Передняя грань
-                { 4, 5 }, { 5, 6 }, { 6, 7 }, { 7, 4 }, // Задняя грань
-                { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 }  // Соединения между гранями
+                { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 },
+                { 4, 5 }, { 5, 6 }, { 6, 7 }, { 7, 4 },
+                { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 }
             };
 
             // Рисуем линии для соединений
@@ -198,10 +241,12 @@ namespace ComputerGraphics1
             {
                 int start = edges[i, 0];
                 int end = edges[i, 1];
-                graphics.DrawLine(Pens.Red, matrixDraw[start, 0], matrixDraw[start, 1], matrixDraw[end, 0], matrixDraw[end, 1]);
+                if (IsEdgeVisible(start, end, observer, vertices))
+                {
+                    graphics.DrawLine(Pens.Red, matrixDraw[start, 0], matrixDraw[start, 1], matrixDraw[end, 0], matrixDraw[end, 1]);
+                }
             }
-        }*/
-
+        }
 
         /**
          * Метод обрабатывает событие нажатия на кнопку buttonDeffaultPosition
@@ -386,20 +431,11 @@ namespace ComputerGraphics1
             return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
         }
 
-        private bool IsFaceVisible(int[] face, Vector observer, Vector[] vertices)
+        private Vector Normalize(Vector v)
         {
-            Vector vec1 = VectorSubtraction(vertices[face[1]], vertices[face[0]]);
-            Vector vec2 = VectorSubtraction(vertices[face[2]], vertices[face[1]]);
-            Vector normal = VectorCrossProduct(vec1, vec2);
-
-            float D = -VectorDotProduct(normal, vertices[face[0]]);
-            int sign = (int)Math.Sign(VectorDotProduct(normal, new Vector(0, 0, 0)) + D);
-
-            normal.x *= -sign;
-            normal.y *= -sign;
-            normal.z *= -sign;
-
-            return VectorDotProduct(normal, observer) + D > 0;
+            float magnitude = (float)Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+            if (magnitude == 0) return new Vector(0, 0, 0);
+            return new Vector(v.x / magnitude, v.y / magnitude, v.z / magnitude);
         }
 
         // Внутренний класс для представления вектора
@@ -417,67 +453,20 @@ namespace ComputerGraphics1
             }
         }
 
-        private void DrawCube()
+        private bool IsVisible(int[] face, Vector observer)
         {
-            graphics = CreateGraphics();
-            DrawAxis();
-            float[,] matrixDraw = MultiplyMatrices(Figure, proection);
-
-            // Позиция наблюдателя
-            Vector observer = new Vector(100, 100, 200);
-
-            // Определяем соединения между вершинами куба
-            int[,] edges = new int[,]
-            {
-        { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 }, // Передняя грань
-        { 4, 5 }, { 5, 6 }, { 6, 7 }, { 7, 4 }, // Задняя грань
-        { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 }  // Соединения между гранями
-            };
-
-            // Рисуем линии для соединений, проверяя видимость
-            for (int i = 0; i < edges.GetLength(0); i++)
-            {
-                int start = edges[i, 0];
-                int end = edges[i, 1];
-
-                // Получаем координаты векторов
-                Vector startVertex = new Vector(matrixDraw[start, 0], matrixDraw[start, 1], matrixDraw[start, 2]);
-                Vector endVertex = new Vector(matrixDraw[end, 0], matrixDraw[end, 1], matrixDraw[end, 2]);
-
-                // Проверяем видимость линии
-                if (IsEdgeVisible(startVertex, endVertex, observer))
-                {
-                    graphics.DrawLine(Pens.Red, startVertex.x, startVertex.y, endVertex.x, endVertex.y);
-                }
-            }
-        }
-
-        private bool IsEdgeVisible(Vector start, Vector end, Vector observer)
-        {
-            // Определяем направление ребра
-            Vector edgeDirection = VectorSubtraction(end, start);
-
-            // Векторы для граней
-            Vector toObserver = VectorSubtraction(observer, start);
-
-            // Рассчитываем нормаль к ребру
-            Vector normal = VectorCrossProduct(edgeDirection, toObserver);
-
-            // Находим производную плоскости
-            float D = -VectorDotProduct(normal, start);
-
-            // Определяем знак для вектора наблюдателя
-            int sign = -Math.Sign(VectorDotProduct(normal, observer) + D);
-
-            // Применяем знак к нормали
+            Vector AB = new Vector(Figure[face[1], 0], Figure[face[1], 1], Figure[face[1], 2]);
+            Vector BC = new Vector(Figure[face[0], 0], Figure[face[0], 1], Figure[face[0], 2]);
+            Vector CA = new Vector(Figure[face[2], 0], Figure[face[2], 1], Figure[face[2], 2]);
+            Vector vec1 = VectorSubtraction(AB, BC);
+            Vector vec2 = VectorSubtraction(CA, AB);
+            Vector normal = Normalize(VectorCrossProduct(vec1, vec2));
+            float D = -VectorDotProduct(normal, BC);
+            int sign = -(int)Math.Sign(VectorDotProduct(normal, new Vector(0, 0, 0)) + D);
             normal.x *= sign;
             normal.y *= sign;
             normal.z *= sign;
-
-            // Проверяем, видима ли грань
             return VectorDotProduct(normal, observer) + D > 0;
         }
-
-
     }
 }
